@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="utf-8">
-  <title>Buku Tamu Digital - Sekretariat Daerah Kabupaten Tapin </title>
+  <title>Buku Tamu Digital - Kabupaten Tapin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -23,8 +23,8 @@
       to { opacity: 1; transform: translateY(0); }
     }
     
-    @keyframes slideInRight {
-      from { opacity: 0; transform: translateX(30px); }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
       to { opacity: 1; transform: translateX(0); }
     }
     
@@ -33,9 +33,22 @@
       50% { transform: scale(1.05); }
     }
     
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    
     .animate-fade-in-up { animation: fadeInUp 0.6s ease-out; }
-    .animate-slide-in-right { animation: slideInRight 0.6s ease-out; }
+    .animate-slide-in-left { animation: slideInLeft 0.6s ease-out; }
     .animate-pulse-gentle { animation: pulse 2s infinite; }
+    .animate-float { animation: float 3s ease-in-out infinite; }
+    .animate-shake { animation: shake 0.5s ease-in-out; }
     
     /* Custom scrollbar */
     .custom-scrollbar::-webkit-scrollbar { width: 8px; }
@@ -43,8 +56,25 @@
     .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.3); border-radius: 4px; }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.5); }
     
-    /* Form focus effects */
-    .form-input:focus { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+    /* Form styling */
+    .form-floating {
+      position: relative;
+    }
+    
+    .form-floating input:focus + label,
+    .form-floating input:not(:placeholder-shown) + label {
+      transform: translateY(-1.5rem) scale(0.85);
+      color: #4f46e5;
+    }
+    
+    .form-floating label {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      transition: all 0.2s ease;
+      pointer-events: none;
+      color: #64748b;
+    }
     
     /* Success animation */
     @keyframes checkmark {
@@ -52,389 +82,573 @@
       100% { stroke-dashoffset: 0; }
     }
     
-    .checkmark { stroke-dasharray: 100; animation: checkmark 0.8s ease-in-out; }
+    .checkmark {
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+      animation: checkmark 0.6s ease-in-out forwards;
+    }
+    
+    /* Print styles */
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; }
+    }
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-900">
-  <div class="min-h-screen flex flex-col">
-    <!-- Header -->
-    <header class="bg-white/90 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-40 shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16 sm:h-20">
-          <div class="flex items-center gap-4">
-            <!-- Logo -->
-            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center shadow-lg animate-pulse-gentle">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-10 sm:h-10 text-white" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
-              </svg>
-            </div>
-
-  <div class="flex items-center gap-3">
-         
-              <h1 class="text-xl sm:text-2xl font-bold text-slate-900">Buku Tamu Digital</h1>
-              <p class="text-slate-600 font-medium text-sm sm:text-base">Pemerintah Kabupaten Tapin</p>
-            </div>
-          </div>
-          
-          <div class="flex items-center gap-3 sm:gap-4 animate-slide-in-right">
-            <div class="text-right hidden sm:block">
-              <p class="text-sm text-slate-500">Waktu Sekarang</p>
-              <p id="currentTime" class="text-lg font-semibold text-slate-900">—:—</p>
-            </div>
-            <a href="admin.html" class="inline-flex items-center gap-2 bg-slate-600 hover:bg-slate-700 text-white px-3 sm:px-4 py-2 rounded-lg transition text-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
-              </svg>
-              <span class="hidden sm:inline">Admin</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="flex-1 p-4 sm:p-6 lg:p-8">
-      <div class="max-w-4xl mx-auto">
-        <!-- Welcome Section -->
-        <div class="text-center mb-8 sm:mb-12 animate-fade-in-up">
-          <div class="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl animate-pulse-gentle">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 sm:w-12 sm:h-12 text-white" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zM4 18v-4h3v4h2v-7.5c0-.83.67-1.5 1.5-1.5S12 9.67 12 10.5V18h2v-4h3v4h2V8.5c0-1.1-.9-2-2-2H7c-1.1 0-2 .9-2 2V18H4z"/>
+  
+  <!-- Header -->
+  <header class="bg-white/95 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-40 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+        <div class="flex items-center gap-4">
+          <!-- Logo -->
+          <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-white border-2 border-slate-200 flex items-center justify-center shadow-lg animate-pulse-gentle overflow-hidden">
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Lambang_Kabupaten_Tapin.png/150px-Lambang_Kabupaten_Tapin.png" 
+              alt="Logo Kabupaten Tapin" 
+              class="w-8 h-8 sm:w-12 sm:h-12 object-contain"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-10 sm:h-10 text-indigo-600 hidden" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,19H5V5H19V19Z"/>
             </svg>
           </div>
-          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
-            Selamat Datang
-          </h2>
-          <p class="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Silakan isi formulir di bawah ini untuk mendaftarkan kunjungan Anda ke 
-            <span class="font-semibold text-emerald-600">Pemerintah Kabupaten Tapin</span>
-          </p>
+          <div class="animate-fade-in-up">
+            <h1 class="text-xl sm:text-2xl font-bold text-slate-900">Buku Tamu Digital</h1>
+            <p class="text-slate-600 font-medium text-sm sm:text-base">Pemerintah Kabupaten Tapin</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-3 sm:gap-4">
+          <div class="text-right hidden sm:block">
+            <p class="text-sm text-slate-500">Selamat datang di</p>
+            <p class="text-lg font-semibold text-slate-900">Portal Resmi</p>
+          </div>
+          
+          <!-- Admin Button -->
+          <a href="admin.html" class="inline-flex items-center gap-2 bg-slate-600 hover:bg-slate-700 text-white px-3 sm:px-4 py-2 rounded-lg transition text-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+            </svg>
+            <span class="hidden sm:inline">Admin</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-4 sm:p-6 lg:p-8">
+    <div class="max-w-4xl mx-auto">
+      
+      <!-- Welcome Section -->
+      <div class="text-center mb-12 animate-fade-in-up">
+        <div class="w-24 h-24 sm:w-32 sm:h-32 bg-white rounded-3xl shadow-2xl flex items-center justify-center mx-auto mb-8 animate-float overflow-hidden">
+          <img 
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Lambang_Kabupaten_Tapin.png/150px-Lambang_Kabupaten_Tapin.png" 
+            alt="Logo Kabupaten Tapin" 
+            class="w-16 h-16 sm:w-20 sm:h-20 object-contain"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 sm:w-16 sm:h-16 text-indigo-600 hidden" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M16,4C18.11,4 19.8,5.69 19.8,7.8C19.8,9.91 18.11,11.6 16,11.6C13.89,11.6 12.2,9.91 12.2,7.8C12.2,5.69 13.89,4 16,4M16,13.4C18.67,13.4 24,14.73 24,17.4V20H8V17.4C8,14.73 13.33,13.4 16,13.4M8.8,12C10.36,12 11.6,10.76 11.6,9.2C11.6,7.64 10.36,6.4 8.8,6.4C7.24,6.4 6,7.64 6,9.2C6,10.76 7.24,12 8.8,12M8.8,13.4C6.67,13.4 2.4,14.47 2.4,16.6V18.8H6.4V17.4C6.4,16.07 7.09,14.93 8.8,13.4Z"/>
+          </svg>
+        </div>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+          Selamat Datang
+        </h2>
+        <p class="text-lg sm:text-xl text-slate-600 mb-2">
+          di Kantor Pemerintah Kabupaten Tapin
+        </p>
+        <p class="text-slate-500 max-w-2xl mx-auto">
+          Silakan isi buku tamu digital untuk mencatat kunjungan Anda. Data yang Anda berikan akan membantu kami memberikan pelayanan yang lebih baik.
+        </p>
+      </div>
+
+      <!-- Registration Form -->
+      <div id="registrationForm" class="bg-white rounded-3xl shadow-2xl border border-slate-200 p-6 sm:p-8 lg:p-10 animate-slide-in-left">
+        <div class="mb-8">
+          <h3 class="text-2xl font-bold text-slate-900 mb-2">Formulir Pendaftaran Tamu</h3>
+          <p class="text-slate-600">Mohon lengkapi data berikut dengan benar</p>
         </div>
 
-        <!-- Guest Form -->
-        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-fade-in-up">
-          <div class="bg-gradient-to-r from-emerald-600 to-teal-600 p-6 sm:p-8">
-            <div class="flex items-center gap-4">
-              <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-2xl font-bold text-white">Formulir Tamu</h3>
-                <p class="text-emerald-100">Mohon lengkapi data diri Anda</p>
-              </div>
-            </div>
-          </div>
-
-          <form id="guestForm" class="p-6 sm:p-8 space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <!-- Nama Lengkap -->
-              <div class="md:col-span-2">
-                <label for="nama" class="block text-sm font-semibold text-slate-700 mb-2">
-                  Nama Lengkap <span class="text-rose-500">*</span>
-                </label>
-                <input 
-                  type="text" 
-                  id="nama" 
-                  name="nama" 
-                  required 
-                  class="form-input w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition"
-                  placeholder="Masukkan nama lengkap Anda"
-                >
-              </div>
-
-              <!-- Instansi -->
-              <div>
-                <label for="instansi" class="block text-sm font-semibold text-slate-700 mb-2">
-                  Instansi/Organisasi <span class="text-rose-500">*</span>
-                </label>
-                <input 
-                  type="text" 
-                  id="instansi" 
-                  name="instansi" 
-                  required 
-                  class="form-input w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition"
-                  placeholder="Nama instansi/organisasi"
-                >
-              </div>
-
-              <!-- Nomor Telepon -->
-              <div>
-                <label for="telepon" class="block text-sm font-semibold text-slate-700 mb-2">
-                  Nomor Telepon <span class="text-rose-500">*</span>
-                </label>
-                <input 
-                  type="tel" 
-                  id="telepon" 
-                  name="telepon" 
-                  required 
-                  class="form-input w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition"
-                  placeholder="08xxxxxxxxxx"
-                >
-              </div>
-
-              <!-- Keperluan -->
-              <div>
-                <label for="keperluan" class="block text-sm font-semibold text-slate-700 mb-2">
-                  Keperluan <span class="text-rose-500">*</span>
-                </label>
-                <select 
-                  id="keperluan" 
-                  name="keperluan" 
-                  required 
-                  class="form-input w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition"
-                >
-                  <option value="">Pilih keperluan kunjungan</option>
-                  <option value="Konsultasi">Konsultasi</option>
-                  <option value="Pengajuan Surat">Pengajuan Surat</option>
-                  <option value="Rapat/Meeting">Rapat/Meeting</option>
-                  <option value="Pengaduan">Pengaduan</option>
-                  <option value="Perizinan">Perizinan</option>
-                  <option value="Kerjasama">Kerjasama</option>
-                  <option value="Lainnya">Lainnya</option>
-                </select>
-              </div>
-
-              <!-- Bagian yang Dituju -->
-              <div>
-                <label for="bagian" class="block text-sm font-semibold text-slate-700 mb-2">
-                  Bagian yang Dituju <span class="text-rose-500">*</span>
-                </label>
-                <select 
-                  id="bagian" 
-                  name="bagian" 
-                  required 
-                  class="form-input w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition"
-                >
-                  <option value="">Tujuan </option>
-                  <option value="Bupati Tapin">Bupati Tapin</option>
-                  <option value="Wakil Bupati Tapin">Wakil Bupati Tapin</option> 
-                  <option value="Sekretariat Daerah">Sekretariat Daerah</option>
-                  <option value="Staf Ahli">Staf Ahli</option>
-                  <option value="Asisten Pemerintahan">Asisten Pemerintahan</option> 
-                  <option value="Asisten Ekonomi dan Pembangunan">Asisten Ekonomi dan Pembangunan</option>
-                  <option value="Asisten Administrasi Umum"> Asisten Administrasi Umum</option>
-                  <option value="Staf Khusus Bupati ">Staf Khusus Bupati</option>                       
-                  <option value="Bagian Umum">Bagian Umum</option>
-                  <option value="Bagian Keuangan">Bagian Keuangan</option>
-                  <option value="Bagian Hukum">Bagian Hukum</option>
-                  <option value="Bagian Pembangunan">Bagian Pembangunan</option>
-                  <option value="Bagian Pemerintahan">Bagian Pemerintahan</option>
-                  <option value="Bagian Kesejahteraan Rakyat">Bagian Kesejahteraan Rakyat</option>
-                  <option value="Bagian Ekonomi">Bagian Ekonomi</option>
-                  
-                  
-                </select>
-              </div>
-
-              <!-- Bertemu Dengan -->
-              <div class="md:col-span-2">
-                <label for="bertemu" class="block text-sm font-semibold text-slate-700 mb-2">
-                  Bertemu Dengan
-                </label>
-                <input 
-                  type="text" 
-                  id="bertemu" 
-                  name="bertemu" 
-                  class="form-input w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition"
-                  placeholder="Nama pejabat/pegawai yang akan ditemui (opsional)"
-                >
-              </div>
-            </div>
-
-            <!-- Submit Button -->
-            <div class="pt-6">
-              <button 
-                type="submit" 
-                id="submitBtn"
-                class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white py-4 px-6 rounded-xl font-semibold text-lg shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-[1.02]"
+        <form id="guestForm" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Nama Lengkap -->
+            <div class="form-floating">
+              <input 
+                type="text" 
+                id="nama" 
+                name="nama" 
+                required 
+                placeholder=" "
+                class="w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition bg-white"
               >
-                <span id="submitText" class="flex items-center justify-center gap-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                  </svg>
-                  Daftar Kunjungan
-                </span>
-                <span id="submitLoading" class="hidden flex items-center justify-center gap-3">
-                  <svg class="animate-spin w-5 h-5" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
-                  </svg>
-                  Mendaftarkan...
-                </span>
-              </button>
+              <label for="nama" class="text-slate-500">Nama Lengkap *</label>
             </div>
 
-            <!-- Info -->
-            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
-              <div class="flex items-start gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-500 mt-0.5" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,7H13V9H11V7M11,11H13V17H11V11Z"/>
-                </svg>
-                <div>
-                  <p class="text-blue-700 text-sm font-medium mb-1">Informasi Penting</p>
-                  <ul class="text-blue-600 text-sm space-y-1">
-                    <li>• Pastikan data yang diisi sudah benar</li>
-                    <li>• Siapkan dokumen identitas yang diperlukan</li>
-                    <li>• Patuhi protokol kesehatan yang berlaku</li>
-                    <li>• Jangan lupa melakukan check-out setelah selesai</li>
-                  </ul>
-                </div>
-              </div>
+            <!-- Instansi/Perusahaan -->
+            <div class="form-floating">
+              <input 
+                type="text" 
+                id="instansi" 
+                name="instansi" 
+                required 
+                placeholder=" "
+                class="w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition bg-white"
+              >
+              <label for="instansi" class="text-slate-500">Instansi/Perusahaan *</label>
             </div>
-          </form>
-        </div>
 
-        <!-- Recent Visitors -->
-        <div class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl border border-slate-200 animate-slide-in-right">
-          <div class="p-6 sm:p-8 border-b border-slate-200">
-            <div class="flex items-center gap-4">
-              <div class="w-12 h-12 bg-gradient-to-br from-slate-600 to-slate-800 rounded-xl flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 4V6C15 7.1 14.1 8 13 8S11 7.1 11 6V4L5 7V9C5 10.1 5.9 11 7 11S9 10.1 9 9V11C9 12.1 9.9 13 11 13H13C14.1 13 15 12.1 15 11V9C15 10.1 15.9 11 17 11S19 10.1 19 9Z"/>
+            <!-- Nomor Telepon -->
+            <div class="form-floating">
+              <input 
+                type="tel" 
+                id="telepon" 
+                name="telepon" 
+                required 
+                placeholder=" "
+                class="w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition bg-white"
+              >
+              <label for="telepon" class="text-slate-500">Nomor Telepon *</label>
+            </div>
+
+            <!-- Bertemu Dengan -->
+            <div class="form-floating">
+              <input 
+                type="text" 
+                id="bertemu" 
+                name="bertemu" 
+                placeholder=" "
+                class="w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition bg-white"
+              >
+              <label for="bertemu" class="text-slate-500">Bertemu Dengan (Opsional)</label>
+            </div>
+          </div>
+
+          <!-- Keperluan -->
+          <div class="form-floating">
+            <select 
+              id="keperluan" 
+              name="keperluan" 
+              required 
+              class="w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition bg-white"
+            >
+              <option value="">Pilih keperluan kunjungan</option>
+              <option value="Konsultasi">Konsultasi</option>
+              <option value="Pengajuan Dokumen">Pengajuan Dokumen</option>
+              <option value="Pengambilan Dokumen">Pengambilan Dokumen</option>
+              <option value="Rapat/Meeting">Rapat/Meeting</option>
+              <option value="Survei/Penelitian">Survei/Penelitian</option>
+              <option value="Kunjungan Kerja">Kunjungan Kerja</option>
+              <option value="Pengaduan">Pengaduan</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+
+          <!-- Bagian/Divisi -->
+          <div class="form-floating">
+            <select 
+              id="bagian" 
+              name="bagian" 
+              required 
+              class="w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition bg-white"
+            >
+              <option value="">Pilih bagian/divisi tujuan</option>
+              <option value="Sekretariat Daerah">Sekretariat Daerah</option>
+              <option value="Bagian Umum">Bagian Umum</option>
+              <option value="Bagian Keuangan">Bagian Keuangan</option>
+              <option value="Bagian Hukum">Bagian Hukum</option>
+              <option value="Bagian Pembangunan">Bagian Pembangunan</option>
+              <option value="Bagian Pemerintahan">Bagian Pemerintahan</option>
+              <option value="Bagian Kesejahteraan Rakyat">Bagian Kesejahteraan Rakyat</option>
+              <option value="Bagian Ekonomi">Bagian Ekonomi</option>
+              <option value="Dinas Pendidikan">Dinas Pendidikan</option>
+              <option value="Dinas Kesehatan">Dinas Kesehatan</option>
+              <option value="Dinas Sosial">Dinas Sosial</option>
+              <option value="Dinas Pekerjaan Umum">Dinas Pekerjaan Umum</option>
+              <option value="Dinas Pertanian">Dinas Pertanian</option>
+              <option value="Dinas Lingkungan Hidup">Dinas Lingkungan Hidup</option>
+              <option value="Dinas Perhubungan">Dinas Perhubungan</option>
+              <option value="Dinas Pariwisata">Dinas Pariwisata</option>
+              <option value="Badan Perencanaan Daerah">Badan Perencanaan Daerah</option>
+              <option value="Badan Kepegawaian Daerah">Badan Kepegawaian Daerah</option>
+              <option value="Inspektorat">Inspektorat</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+
+          <!-- Submit Button -->
+          <button 
+            type="submit" 
+            id="submitBtn"
+            class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-4 px-6 rounded-xl font-semibold text-lg shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-[1.02]"
+          >
+            <span id="submitText" class="flex items-center justify-center gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
+              </svg>
+              Daftar Sebagai Tamu
+            </span>
+            <span id="submitLoading" class="hidden flex items-center justify-center gap-3">
+              <svg class="animate-spin w-6 h-6" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+              </svg>
+              Mendaftarkan...
+            </span>
+          </button>
+
+          <!-- Important Information -->
+          <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 mt-6">
+            <div class="flex items-start gap-4">
+              <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
                 </svg>
               </div>
               <div>
-                <h3 class="text-xl sm:text-2xl font-bold text-slate-900">Tamu Hari Ini</h3>
-                <p class="text-slate-600">Daftar pengunjung yang telah terdaftar</p>
+                <h4 class="text-blue-900 font-bold text-lg mb-3">Informasi Penting</h4>
+                <ul class="text-blue-800 space-y-2">
+                  <li class="flex items-start gap-2">
+                    <span class="text-blue-600 font-bold mt-1">•</span>
+                    <span>Pastikan data yang diisi sudah benar</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-blue-600 font-bold mt-1">•</span>
+                    <span>Siapkan dokumen identitas yang diperlukan</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-blue-600 font-bold mt-1">•</span>
+                    <span>Patuhi protokol kesehatan yang berlaku</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-blue-600 font-bold mt-1">•</span>
+                    <span>Jangan lupa melakukan check-out setelah selesai</span>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
-          
-          <div class="p-6 sm:p-8">
-            <div id="recentVisitors" class="space-y-4 custom-scrollbar max-h-96 overflow-y-auto">
-              <!-- Recent visitors will be populated here -->
-            </div>
-            
-            <div id="noVisitors" class="text-center py-12 hidden">
-              <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-slate-400" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zM4 18v-4h3v4h2v-7.5c0-.83.67-1.5 1.5-1.5S12 9.67 12 10.5V18h2v-4h3v4h2V8.5c0-1.1-.9-2-2-2H7c-1.1 0-2 .9-2 2V18H4z"/>
-                </svg>
-              </div>
-              <p class="text-slate-500 text-lg">Belum ada tamu hari ini</p>
-              <p class="text-slate-400 text-sm mt-2">Daftar akan muncul setelah ada yang mengisi formulir</p>
+        </form>
+      </div>
+
+      <!-- Success Message -->
+      <div id="successMessage" class="hidden bg-white rounded-3xl shadow-2xl border border-slate-200 p-6 sm:p-8 lg:p-10 text-center animate-fade-in-up">
+        <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white checkmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
+        </div>
+        
+        <h3 class="text-2xl font-bold text-slate-900 mb-4">Pendaftaran Berhasil!</h3>
+        <p class="text-slate-600 mb-6">
+          Terima kasih telah mendaftar. Data Anda telah tersimpan dengan nomor registrasi:
+        </p>
+        <div class="bg-slate-50 rounded-xl p-4 mb-6">
+          <p class="text-sm text-slate-500 mb-1">Nomor Registrasi</p>
+          <p id="registrationNumber" class="text-2xl font-bold text-indigo-600 font-mono"></p>
+        </div>
+        
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+          <div class="flex items-start gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-600 mt-0.5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
+            </svg>
+            <div class="text-left">
+              <p class="text-blue-800 font-semibold mb-1">Informasi Penting:</p>
+              <ul class="text-blue-700 text-sm space-y-1">
+                <li>• Silakan menuju ke bagian/divisi yang dituju</li>
+                <li>• Tunjukkan nomor registrasi jika diperlukan</li>
+                <li>• Jangan lupa untuk check-out setelah selesai</li>
+              </ul>
             </div>
           </div>
         </div>
-      </div>
-    </main>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 mt-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="text-center">
-          <div class="flex items-center justify-center gap-3 mb-4">
-            <div class="w-8 h-8 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-lg flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <button 
+            id="newRegistrationBtn"
+            class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-6 rounded-xl font-semibold transition"
+          >
+            Daftar Tamu Baru
+          </button>
+          <button 
+            id="surveyBtn"
+            class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 px-6 rounded-xl font-semibold transition"
+          >
+            Isi Survei Kepuasan
+          </button>
+        </div>
+      </div>
+
+      <!-- Survey Form -->
+      <div id="surveyForm" class="hidden bg-white rounded-3xl shadow-2xl border border-slate-200 p-6 sm:p-8 lg:p-10 animate-slide-in-left">
+        <div class="mb-8">
+          <h3 class="text-2xl font-bold text-slate-900 mb-2">Survei Kepuasan Layanan</h3>
+          <p class="text-slate-600">Bantu kami meningkatkan kualitas pelayanan dengan memberikan penilaian</p>
+        </div>
+
+        <form id="feedbackForm" class="space-y-6">
+          <!-- Rating -->
+          <div>
+            <label class="block text-lg font-semibold text-slate-900 mb-4">
+              Bagaimana penilaian Anda terhadap pelayanan kami? *
+            </label>
+            <div class="flex justify-center gap-2 mb-4">
+              <button type="button" class="rating-btn w-16 h-16 rounded-full border-2 border-slate-200 hover:border-amber-400 transition flex items-center justify-center text-2xl" data-rating="1">
+                ⭐
+              </button>
+              <button type="button" class="rating-btn w-16 h-16 rounded-full border-2 border-slate-200 hover:border-amber-400 transition flex items-center justify-center text-2xl" data-rating="2">
+                ⭐
+              </button>
+              <button type="button" class="rating-btn w-16 h-16 rounded-full border-2 border-slate-200 hover:border-amber-400 transition flex items-center justify-center text-2xl" data-rating="3">
+                ⭐
+              </button>
+              <button type="button" class="rating-btn w-16 h-16 rounded-full border-2 border-slate-200 hover:border-amber-400 transition flex items-center justify-center text-2xl" data-rating="4">
+                ⭐
+              </button>
+              <button type="button" class="rating-btn w-16 h-16 rounded-full border-2 border-slate-200 hover:border-amber-400 transition flex items-center justify-center text-2xl" data-rating="5">
+                ⭐
+              </button>
+            </div>
+            <div class="text-center">
+              <p id="ratingText" class="text-slate-500 text-sm">Pilih rating dari 1-5 bintang</p>
+            </div>
+            <input type="hidden" id="rating" name="rating" required>
+          </div>
+
+          <!-- Comment -->
+          <div>
+            <label for="comment" class="block text-lg font-semibold text-slate-900 mb-3">
+              Komentar atau Saran (Opsional)
+            </label>
+            <textarea 
+              id="comment" 
+              name="comment" 
+              rows="4" 
+              placeholder="Bagikan pengalaman atau saran Anda untuk membantu kami meningkatkan pelayanan..."
+              class="w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition resize-none"
+            ></textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="flex gap-4">
+            <button 
+              type="button" 
+              id="skipSurveyBtn"
+              class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 py-3 px-6 rounded-xl font-semibold transition"
+            >
+              Lewati Survei
+            </button>
+            <button 
+              type="submit" 
+              id="submitSurveyBtn"
+              class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white py-3 px-6 rounded-xl font-semibold transition"
+            >
+              <span id="surveySubmitText">Kirim Survei</span>
+              <span id="surveySubmitLoading" class="hidden">Mengirim...</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Survey Success -->
+      <div id="surveySuccess" class="hidden bg-white rounded-3xl shadow-2xl border border-slate-200 p-6 sm:p-8 lg:p-10 text-center animate-fade-in-up">
+        <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.46,13.97L5.82,21L12,17.27Z"/>
+          </svg>
+        </div>
+        
+        <h3 class="text-2xl font-bold text-slate-900 mb-4">Terima Kasih!</h3>
+        <p class="text-slate-600 mb-6">
+          Survei Anda telah berhasil dikirim. Masukan Anda sangat berharga untuk meningkatkan kualitas pelayanan kami.
+        </p>
+        
+        <button 
+          id="finishBtn"
+          class="bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-8 rounded-xl font-semibold transition"
+        >
+          Selesai
+        </button>
+      </div>
+
+      <!-- Today's Guests Section -->
+      <div id="todayGuestsSection" class="bg-white rounded-3xl shadow-2xl border border-slate-200 p-6 sm:p-8 lg:p-10 animate-slide-in-left">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h3 class="text-2xl font-bold text-slate-900 mb-2">Tamu Hari Ini</h3>
+            <p class="text-slate-600">Daftar pengunjung yang telah terdaftar</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="bg-indigo-100 text-indigo-800 px-4 py-2 rounded-xl font-semibold">
+              <span id="todayGuestCount">0</span> Tamu
+            </div>
+            <button 
+              id="refreshGuestList"
+              class="bg-slate-100 hover:bg-slate-200 text-slate-700 p-2 rounded-xl transition"
+              title="Refresh daftar"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"/>
               </svg>
-            </div>
-            <span class="text-lg font-semibold text-slate-900">Pemerintah Kabupaten Tapin</span>
+            </button>
           </div>
-          <p class="text-slate-500 text-sm mb-4">
-            Jl. A. Yani No. 1, Rantau, Kabupaten Tapin, Kalimantan Selatan 70815
-          </p>
-          <p class="text-slate-400 text-xs">
-            © 2024 Pemerintah Kabupaten Tapin. Sistem Buku Tamu Digital.
-          </p>
         </div>
-      </div>
-    </footer>
 
-    <!-- Success Modal -->
-    <div id="successModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-      <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-auto transform transition-all">
-        <div class="p-8 text-center">
-          <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white checkmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+        <!-- Guest List -->
+        <div id="guestList" class="space-y-4 max-h-96 overflow-y-auto custom-scrollbar">
+          <!-- Guest items will be populated here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyGuestState" class="text-center py-12">
+          <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-slate-400" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16,4C18.11,4 19.8,5.69 19.8,7.8C19.8,9.91 18.11,11.6 16,11.6C13.89,11.6 12.2,9.91 12.2,7.8C12.2,5.69 13.89,4 16,4M16,13.4C18.67,13.4 24,14.73 24,17.4V20H8V17.4C8,14.73 13.33,13.4 16,13.4M8.8,12C10.36,12 11.6,10.76 11.6,9.2C11.6,7.64 10.36,6.4 8.8,6.4C7.24,6.4 6,7.64 6,9.2C6,10.76 7.24,12 8.8,12M8.8,13.4C6.67,13.4 2.4,14.47 2.4,16.6V18.8H6.4V17.4C6.4,16.07 7.09,14.93 8.8,13.4Z"/>
             </svg>
           </div>
-          
-          <h3 class="text-2xl font-bold text-slate-900 mb-4">Pendaftaran Berhasil!</h3>
-          <p class="text-slate-600 mb-6">
-            Terima kasih telah mendaftar. Data Anda telah tersimpan dan Anda dapat melanjutkan kunjungan.
-          </p>
-          
-          <div id="visitorInfo" class="bg-slate-50 rounded-xl p-4 mb-6 text-left">
-            <!-- Visitor info will be populated here -->
-          </div>
-          
-          <div class="flex gap-3">
-            <button id="closeModal" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 py-3 px-4 rounded-lg font-semibold transition">
-              Tutup
-            </button>
-            <button id="addAnother" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 px-4 rounded-lg font-semibold transition">
-              Daftar Lagi
-            </button>
-          </div>
+          <h4 class="text-lg font-semibold text-slate-900 mb-2">Belum Ada Tamu Hari Ini</h4>
+          <p class="text-slate-500">Daftar tamu akan muncul setelah ada yang mendaftar</p>
         </div>
       </div>
-    </div>
 
-    <!-- Survey Modal -->
-    <div id="surveyModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-      <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-auto">
-        <div class="p-6 sm:p-8">
-          <div class="text-center mb-6">
-            <div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 bg-white border border-slate-200 rounded-lg flex items-center justify-center overflow-hidden">
+              <img 
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Lambang_Kabupaten_Tapin.png/150px-Lambang_Kabupaten_Tapin.png" 
+                alt="Logo Kabupaten Tapin" 
+                class="w-6 h-6 object-contain"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+              >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-600 hidden" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,19H5V5H19V19Z"/>
               </svg>
             </div>
-            <h3 class="text-xl font-bold text-slate-900 mb-2">Survei Kepuasan</h3>
-            <p class="text-slate-600">Bagaimana pengalaman Anda hari ini?</p>
+            <span class="text-lg font-semibold text-slate-900">Kabupaten Tapin</span>
           </div>
-          
-          <form id="surveyForm" class="space-y-6">
-            <!-- Rating -->
-            <div>
-              <label class="block text-sm font-semibold text-slate-700 mb-3">
-                Berikan rating untuk pelayanan kami
-              </label>
-              <div class="flex justify-center gap-2">
-                <button type="button" class="rating-btn w-12 h-12 rounded-full border-2 border-slate-200 hover:border-amber-400 hover:bg-amber-50 transition flex items-center justify-center text-2xl" data-rating="1">⭐</button>
-                <button type="button" class="rating-btn w-12 h-12 rounded-full border-2 border-slate-200 hover:border-amber-400 hover:bg-amber-50 transition flex items-center justify-center text-2xl" data-rating="2">⭐</button>
-                <button type="button" class="rating-btn w-12 h-12 rounded-full border-2 border-slate-200 hover:border-amber-400 hover:bg-amber-50 transition flex items-center justify-center text-2xl" data-rating="3">⭐</button>
-                <button type="button" class="rating-btn w-12 h-12 rounded-full border-2 border-slate-200 hover:border-amber-400 hover:bg-amber-50 transition flex items-center justify-center text-2xl" data-rating="4">⭐</button>
-                <button type="button" class="rating-btn w-12 h-12 rounded-full border-2 border-slate-200 hover:border-amber-400 hover:bg-amber-50 transition flex items-center justify-center text-2xl" data-rating="5">⭐</button>
-              </div>
-              <input type="hidden" id="surveyRating" name="rating" required>
-            </div>
-
-            <!-- Comment -->
-            <div>
-              <label for="surveyComment" class="block text-sm font-semibold text-slate-700 mb-2">
-                Komentar & Saran (Opsional)
-              </label>
-              <textarea 
-                id="surveyComment" 
-                name="comment" 
-                rows="4" 
-                class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-amber-500 focus:ring-4 focus:ring-amber-100 transition resize-none"
-                placeholder="Bagikan pengalaman atau saran Anda..."
-              ></textarea>
-            </div>
-
-            <div class="flex gap-3">
-              <button type="button" id="skipSurvey" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 py-3 px-4 rounded-lg font-semibold transition">
-                Lewati
-              </button>
-              <button type="submit" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white py-3 px-4 rounded-lg font-semibold transition">
-                Kirim
-              </button>
-            </div>
-          </form>
+          <p class="text-slate-600 text-sm">
+            Sistem buku tamu digital untuk meningkatkan pelayanan publik dan transparansi pemerintahan di Kabupaten Tapin.
+          </p>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-slate-900 mb-4">Kontak</h4>
+          <ul class="space-y-2 text-sm text-slate-600">
+            <li>📍 Jl. A. Yani No. 1, Rantau</li>
+            <li>📞 (0517) 21234</li>
+            <li>✉️ info@tapinkab.go.id</li>
+            <li>🌐 www.tapinkab.go.id</li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-slate-900 mb-4">Jam Pelayanan</h4>
+          <ul class="space-y-2 text-sm text-slate-600">
+            <li>Senin - Kamis: 07:30 - 16:00</li>
+            <li>Jumat: 07:30 - 16:30</li>
+            <li>Sabtu - Minggu: Tutup</li>
+            <li class="text-rose-600">*Kecuali hari libur nasional</li>
+          </ul>
         </div>
       </div>
+      
+      <div class="border-t border-slate-200 mt-8 pt-8 text-center">
+        <p class="text-slate-500 text-sm">
+          © 2024 Pemerintah Kabupaten Tapin. Sistem Buku Tamu Digital.
+        </p>
+        <p class="text-slate-400 text-xs mt-2">
+          Dibuat dengan ❤️ untuk pelayanan publik yang lebih baik
+        </p>
+      </div>
     </div>
+  </footer>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 hidden">
-      <div id="toastInner" class="px-6 py-4 rounded-xl text-white shadow-2xl max-w-sm transform transition-all duration-300"></div>
+  <!-- Service Survey Popup -->
+  <div id="serviceSurveyModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full mx-auto animate-fade-in-up">
+      <div class="p-6 sm:p-8">
+        <div class="text-center mb-6">
+          <div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.46,13.97L5.82,21L12,17.27Z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2">Survei Pelayanan</h3>
+          <p class="text-slate-600 text-sm">Bagaimana penilaian Anda terhadap pelayanan kami?</p>
+        </div>
+
+        <form id="popupSurveyForm" class="space-y-6">
+          <!-- Rating Stars -->
+          <div class="text-center">
+            <div class="flex justify-center gap-2 mb-4">
+              <button type="button" class="popup-rating-btn w-12 h-12 rounded-full border-2 border-slate-200 hover:border-amber-400 transition flex items-center justify-center text-xl" data-rating="1">
+                ⭐
+              </button>
+              <button type="button" class="popup-rating-btn w-12 h-12 rounded-full border-2 border-slate-200 hover:border-amber-400 transition flex items-center justify-center text-xl" data-rating="2">
+                ⭐
+              </button>
+              <button type="button" class="popup-rating-btn w-12 h-12 rounded-full border-2 border-slate-200 hover:border-amber-400 transition flex items-center justify-center text-xl" data-rating="3">
+                ⭐
+              </button>
+              <button type="button" class="popup-rating-btn w-12 h-12 rounded-full border-2 border-slate-200 hover:border-amber-400 transition flex items-center justify-center text-xl" data-rating="4">
+                ⭐
+              </button>
+              <button type="button" class="popup-rating-btn w-12 h-12 rounded-full border-2 border-slate-200 hover:border-amber-400 transition flex items-center justify-center text-xl" data-rating="5">
+                ⭐
+              </button>
+            </div>
+            <p id="popupRatingText" class="text-slate-500 text-sm mb-4">Pilih rating dari 1-5 bintang</p>
+            <input type="hidden" id="popupRating" name="rating" required>
+          </div>
+
+          <!-- Quick Comment -->
+          <div>
+            <textarea 
+              id="popupComment" 
+              name="comment" 
+              rows="3" 
+              placeholder="Komentar singkat (opsional)..."
+              class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition resize-none text-sm"
+            ></textarea>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex gap-3">
+            <button 
+              type="button" 
+              id="skipPopupSurvey"
+              class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 py-3 px-4 rounded-xl font-semibold transition text-sm"
+            >
+              Lewati
+            </button>
+            <button 
+              type="submit" 
+              id="submitPopupSurvey"
+              class="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-3 px-4 rounded-xl font-semibold transition text-sm"
+            >
+              <span id="popupSurveyText">Kirim</span>
+              <span id="popupSurveyLoading" class="hidden">Mengirim...</span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden">
+    <div id="toastInner" class="px-6 py-4 rounded-xl text-white shadow-2xl max-w-sm transform transition-all duration-300"></div>
   </div>
 
   <script>
@@ -443,29 +657,39 @@
     const SURVEY_KEY = 'surveyData_v1';
     
     // Elements
-    const currentTime = document.getElementById('currentTime');
-    const guestForm = document.getElementById('guestForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const submitText = document.getElementById('submitText');
-    const submitLoading = document.getElementById('submitLoading');
-    const recentVisitors = document.getElementById('recentVisitors');
-    const noVisitors = document.getElementById('noVisitors');
-    const successModal = document.getElementById('successModal');
-    const surveyModal = document.getElementById('surveyModal');
-    const visitorInfo = document.getElementById('visitorInfo');
-    const closeModal = document.getElementById('closeModal');
-    const addAnother = document.getElementById('addAnother');
+    const registrationForm = document.getElementById('registrationForm');
+    const successMessage = document.getElementById('successMessage');
     const surveyForm = document.getElementById('surveyForm');
-    const skipSurvey = document.getElementById('skipSurvey');
+    const surveySuccess = document.getElementById('surveySuccess');
+    const todayGuestsSection = document.getElementById('todayGuestsSection');
+    const guestForm = document.getElementById('guestForm');
+    const feedbackForm = document.getElementById('feedbackForm');
+    const serviceSurveyModal = document.getElementById('serviceSurveyModal');
+    const popupSurveyForm = document.getElementById('popupSurveyForm');
+    const guestList = document.getElementById('guestList');
+    const emptyGuestState = document.getElementById('emptyGuestState');
+    const todayGuestCount = document.getElementById('todayGuestCount');
     const toast = document.getElementById('toast');
     const toastInner = document.getElementById('toastInner');
     
     // State
-    let currentVisitorId = null;
+    let currentRegistration = null;
     let selectedRating = 0;
-
+    let popupSelectedRating = 0;
+    
     // Utilities
-    const generateId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
+    const generateId = () => {
+      return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    };
+    
+    const generateRegistrationNumber = () => {
+      const date = new Date();
+      const year = date.getFullYear().toString().substr(-2);
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
+      const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+      return `TP${year}${month}${day}${random}`;
+    };
     
     const showToast = (message, type = 'success') => {
       toastInner.textContent = message;
@@ -480,263 +704,203 @@
         toast.classList.add('hidden');
       }, 4000);
     };
-
-    const formatDateTime = (dateString) => {
-      const date = new Date(dateString);
-      return date.toLocaleString('id-ID', {
-        weekday: 'short',
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-    };
-
-    const isToday = (dateString) => {
-      const date = new Date(dateString);
-      const today = new Date();
-      return date.toDateString() === today.toDateString();
-    };
-
-    // Data management
-    const saveVisitor = (visitorData) => {
+    
+    const saveToStorage = (key, data) => {
       try {
-        const existingData = localStorage.getItem(STORAGE_KEY);
-        const visitors = existingData ? JSON.parse(existingData) : [];
-        
-        const newVisitor = {
-          id: generateId(),
-          ...visitorData,
-          jamMasuk: new Date().toISOString(),
-          jamKeluar: null
-        };
-        
-        visitors.push(newVisitor);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(visitors));
-        
-        return newVisitor;
+        const existing = JSON.parse(localStorage.getItem(key) || '[]');
+        existing.push(data);
+        localStorage.setItem(key, JSON.stringify(existing));
+        return true;
       } catch (error) {
-        console.error('Error saving visitor:', error);
-        return null;
+        console.error('Storage error:', error);
+        return false;
       }
     };
 
-    const saveSurvey = (surveyData) => {
+    const getFromStorage = (key) => {
       try {
-        const existingData = localStorage.getItem(SURVEY_KEY);
-        const surveys = existingData ? JSON.parse(existingData) : [];
-        
-        const newSurvey = {
-          id: generateId(),
-          ...surveyData,
-          timestamp: new Date().toISOString()
-        };
-        
-        surveys.push(newSurvey);
-        localStorage.setItem(SURVEY_KEY, JSON.stringify(surveys));
-        
-        return newSurvey;
+        return JSON.parse(localStorage.getItem(key) || '[]');
       } catch (error) {
-        console.error('Error saving survey:', error);
-        return null;
-      }
-    };
-
-    const loadTodayVisitors = () => {
-      try {
-        const data = localStorage.getItem(STORAGE_KEY);
-        const allVisitors = data ? JSON.parse(data) : [];
-        
-        return allVisitors.filter(visitor => isToday(visitor.jamMasuk));
-      } catch (error) {
-        console.error('Error loading visitors:', error);
+        console.error('Storage error:', error);
         return [];
       }
     };
 
-    // UI Updates
-    const updateClock = () => {
-      const now = new Date();
-      const timeString = now.toLocaleString('id-ID', {
-        weekday: 'long',
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
+    const getTodayGuests = () => {
+      const allGuests = getFromStorage(STORAGE_KEY);
+      const today = new Date().toDateString();
       
-      currentTime.textContent = timeString;
+      return allGuests.filter(guest => {
+        const guestDate = new Date(guest.jamMasuk).toDateString();
+        return guestDate === today;
+      }).sort((a, b) => new Date(b.jamMasuk) - new Date(a.jamMasuk));
     };
 
-    const updateRecentVisitors = () => {
-      const todayVisitors = loadTodayVisitors();
+    const formatTime = (isoString) => {
+      const date = new Date(isoString);
+      return date.toLocaleTimeString('id-ID', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: false 
+      });
+    };
+
+    const getStatusBadge = (status) => {
+      if (status === 'active') {
+        return '<span class="bg-emerald-100 text-emerald-800 px-2 py-1 rounded-full text-xs font-semibold">Aktif</span>';
+      } else {
+        return '<span class="bg-slate-100 text-slate-600 px-2 py-1 rounded-full text-xs font-semibold">Selesai</span>';
+      }
+    };
+
+    const renderGuestList = () => {
+      const todayGuests = getTodayGuests();
       
-      if (todayVisitors.length === 0) {
-        recentVisitors.classList.add('hidden');
-        noVisitors.classList.remove('hidden');
+      // Update counter
+      todayGuestCount.textContent = todayGuests.length;
+      
+      if (todayGuests.length === 0) {
+        guestList.classList.add('hidden');
+        emptyGuestState.classList.remove('hidden');
         return;
       }
       
-      noVisitors.classList.add('hidden');
-      recentVisitors.classList.remove('hidden');
+      guestList.classList.remove('hidden');
+      emptyGuestState.classList.add('hidden');
       
-      // Sort by most recent first
-      const sortedVisitors = todayVisitors.sort((a, b) => 
-        new Date(b.jamMasuk) - new Date(a.jamMasuk)
-      );
-      
-      recentVisitors.innerHTML = sortedVisitors.map(visitor => `
-        <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition">
-          <div class="flex items-center gap-4">
-            <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center shadow-lg">
-              <span class="text-white font-bold text-lg">${visitor.nama.charAt(0).toUpperCase()}</span>
+      guestList.innerHTML = todayGuests.map(guest => `
+        <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 hover:border-indigo-300 transition">
+          <div class="flex items-start justify-between">
+            <div class="flex-1">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-600" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-slate-900">${guest.nama}</h4>
+                  <p class="text-sm text-slate-600">${guest.instansi}</p>
+                </div>
+              </div>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-600 mb-3">
+                <div class="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M16.2,16.2L11,13V7H12.5V12.2L17,14.9L16.2,16.2Z"/>
+                  </svg>
+                  <span>Masuk: ${formatTime(guest.jamMasuk)}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,19H5V5H19V19Z"/>
+                  </svg>
+                  <span>${guest.bagian}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z"/>
+                  </svg>
+                  <span>${guest.telepon}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                  </svg>
+                  <span>${guest.keperluan}</span>
+                </div>
+              </div>
             </div>
-            <div>
-              <p class="font-semibold text-slate-900">${visitor.nama}</p>
-              <p class="text-sm text-slate-600">${visitor.instansi}</p>
-              <p class="text-xs text-slate-500">${visitor.keperluan} • ${visitor.bagian}</p>
+            
+            <div class="flex flex-col items-end gap-2">
+              ${getStatusBadge(guest.status)}
+              <div class="bg-white px-3 py-1 rounded-lg border text-xs font-mono text-slate-600">
+                ${guest.registrationNumber}
+              </div>
             </div>
-          </div>
-          <div class="text-right">
-            <div class="flex items-center gap-2 mb-1">
-              <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                visitor.jamKeluar 
-                  ? 'bg-emerald-100 text-emerald-800' 
-                  : 'bg-amber-100 text-amber-800'
-              }">
-                ${visitor.jamKeluar ? '✓ Selesai' : '⏱ Sedang Berkunjung'}
-              </span>
-            </div>
-            <p class="text-sm font-medium text-slate-900">${formatDateTime(visitor.jamMasuk)}</p>
           </div>
         </div>
       `).join('');
     };
-
-    const showSuccessModal = (visitor) => {
-      currentVisitorId = visitor.id;
+    
+    const validateForm = (form) => {
+      const requiredFields = form.querySelectorAll('[required]');
+      let isValid = true;
       
-      visitorInfo.innerHTML = `
-        <div class="space-y-2">
-          <div class="flex justify-between">
-            <span class="text-slate-600">Nama:</span>
-            <span class="font-semibold">${visitor.nama}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-slate-600">Instansi:</span>
-            <span class="font-semibold">${visitor.instansi}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-slate-600">Keperluan:</span>
-            <span class="font-semibold">${visitor.keperluan}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-slate-600">Bagian:</span>
-            <span class="font-semibold">${visitor.bagian}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-slate-600">Waktu:</span>
-            <span class="font-semibold">${formatDateTime(visitor.jamMasuk)}</span>
-          </div>
-        </div>
-      `;
-      
-      successModal.classList.remove('hidden');
-    };
-
-    const hideSuccessModal = () => {
-      successModal.classList.add('hidden');
-      currentVisitorId = null;
-    };
-
-    const showSurveyModal = () => {
-      hideSuccessModal();
-      surveyModal.classList.remove('hidden');
-      resetSurveyForm();
-    };
-
-    const hideSurveyModal = () => {
-      surveyModal.classList.add('hidden');
-      resetSurveyForm();
-    };
-
-    const resetSurveyForm = () => {
-      selectedRating = 0;
-      document.getElementById('surveyRating').value = '';
-      document.getElementById('surveyComment').value = '';
-      
-      // Reset rating buttons
-      document.querySelectorAll('.rating-btn').forEach(btn => {
-        btn.classList.remove('bg-amber-100', 'border-amber-400', 'text-amber-600');
-        btn.classList.add('border-slate-200');
+      requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+          field.classList.add('border-rose-500', 'animate-shake');
+          setTimeout(() => {
+            field.classList.remove('animate-shake');
+          }, 500);
+          isValid = false;
+        } else {
+          field.classList.remove('border-rose-500');
+        }
       });
+      
+      return isValid;
     };
-
-    const resetForm = () => {
-      guestForm.reset();
-      submitBtn.disabled = false;
-      submitText.classList.remove('hidden');
-      submitLoading.classList.add('hidden');
-    };
-
-    // Form handling
-    const handleFormSubmit = async (e) => {
+    
+    // Form handlers
+    const handleGuestRegistration = async (e) => {
       e.preventDefault();
       
-      // Disable submit button and show loading
+      if (!validateForm(guestForm)) {
+        showToast('Mohon lengkapi semua field yang wajib diisi', 'error');
+        return;
+      }
+      
+      const submitBtn = document.getElementById('submitBtn');
+      const submitText = document.getElementById('submitText');
+      const submitLoading = document.getElementById('submitLoading');
+      
+      // Show loading
       submitBtn.disabled = true;
       submitText.classList.add('hidden');
       submitLoading.classList.remove('hidden');
       
-      // Simulate processing time
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Simulate processing delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Get form data
+      // Collect form data
       const formData = new FormData(guestForm);
-      const visitorData = {
+      const registrationData = {
+        id: generateId(),
+        registrationNumber: generateRegistrationNumber(),
         nama: formData.get('nama').trim(),
         instansi: formData.get('instansi').trim(),
         telepon: formData.get('telepon').trim(),
+        bertemu: formData.get('bertemu').trim() || '-',
         keperluan: formData.get('keperluan'),
         bagian: formData.get('bagian'),
-        bertemu: formData.get('bertemu').trim() || '-'
+        jamMasuk: new Date().toISOString(),
+        jamKeluar: null,
+        status: 'active'
       };
       
-      // Validate required fields
-      if (!visitorData.nama || !visitorData.instansi || !visitorData.telepon || 
-          !visitorData.keperluan || !visitorData.bagian) {
-        showToast('Mohon lengkapi semua field yang wajib diisi', 'error');
-        submitBtn.disabled = false;
-        submitText.classList.remove('hidden');
-        submitLoading.classList.add('hidden');
-        return;
-      }
-      
-      // Save visitor data
-      const savedVisitor = saveVisitor(visitorData);
-      
-      if (savedVisitor) {
-        // Update recent visitors display
-        updateRecentVisitors();
+      // Save to storage
+      if (saveToStorage(STORAGE_KEY, registrationData)) {
+        currentRegistration = registrationData;
         
-        // Reset form
-        resetForm();
+        // Update guest list
+        renderGuestList();
         
-        // Show success modal
-        showSuccessModal(savedVisitor);
+        // Show popup survey first
+        serviceSurveyModal.classList.remove('hidden');
         
         showToast('Pendaftaran berhasil!', 'success');
       } else {
         showToast('Gagal menyimpan data. Silakan coba lagi.', 'error');
-        submitBtn.disabled = false;
-        submitText.classList.remove('hidden');
-        submitLoading.classList.add('hidden');
       }
+      
+      // Reset button
+      submitBtn.disabled = false;
+      submitText.classList.remove('hidden');
+      submitLoading.classList.add('hidden');
     };
-
-    const handleSurveySubmit = (e) => {
+    
+    const handleSurveySubmission = async (e) => {
       e.preventDefault();
       
       if (selectedRating === 0) {
@@ -744,94 +908,295 @@
         return;
       }
       
-      const comment = document.getElementById('surveyComment').value.trim();
+      const submitBtn = document.getElementById('submitSurveyBtn');
+      const submitText = document.getElementById('surveySubmitText');
+      const submitLoading = document.getElementById('surveySubmitLoading');
       
+      // Show loading
+      submitBtn.disabled = true;
+      submitText.classList.add('hidden');
+      submitLoading.classList.remove('hidden');
+      
+      // Simulate processing delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Collect survey data
       const surveyData = {
-        visitorId: currentVisitorId,
+        id: generateId(),
+        visitorId: currentRegistration ? currentRegistration.id : null,
         rating: selectedRating,
-        comment: comment
+        comment: document.getElementById('comment').value.trim(),
+        timestamp: new Date().toISOString()
       };
       
-      const savedSurvey = saveSurvey(surveyData);
-      
-      if (savedSurvey) {
-        showToast('Terima kasih atas feedback Anda!', 'success');
-        hideSurveyModal();
+      // Save to storage
+      if (saveToStorage(SURVEY_KEY, surveyData)) {
+        surveyForm.classList.add('hidden');
+        surveySuccess.classList.remove('hidden');
+        showToast('Survei berhasil dikirim!', 'success');
       } else {
-        showToast('Gagal menyimpan survei', 'error');
+        showToast('Gagal mengirim survei. Silakan coba lagi.', 'error');
       }
+      
+      // Reset button
+      submitBtn.disabled = false;
+      submitText.classList.remove('hidden');
+      submitLoading.classList.add('hidden');
+    };
+    
+    // Popup survey submission
+    const handlePopupSurveySubmission = async (e) => {
+      e.preventDefault();
+      
+      if (popupSelectedRating === 0) {
+        showToast('Mohon berikan rating terlebih dahulu', 'error');
+        return;
+      }
+      
+      const submitBtn = document.getElementById('submitPopupSurvey');
+      const submitText = document.getElementById('popupSurveyText');
+      const submitLoading = document.getElementById('popupSurveyLoading');
+      
+      // Show loading
+      submitBtn.disabled = true;
+      submitText.classList.add('hidden');
+      submitLoading.classList.remove('hidden');
+      
+      // Simulate processing delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Collect survey data
+      const surveyData = {
+        id: generateId(),
+        visitorId: currentRegistration ? currentRegistration.id : null,
+        rating: popupSelectedRating,
+        comment: document.getElementById('popupComment').value.trim(),
+        timestamp: new Date().toISOString(),
+        type: 'popup'
+      };
+      
+      // Save to storage
+      if (saveToStorage(SURVEY_KEY, surveyData)) {
+        serviceSurveyModal.classList.add('hidden');
+        
+        // Show success message
+        document.getElementById('registrationNumber').textContent = currentRegistration.registrationNumber;
+        registrationForm.classList.add('hidden');
+        successMessage.classList.remove('hidden');
+        
+        showToast('Survei berhasil dikirim!', 'success');
+      } else {
+        showToast('Gagal mengirim survei. Silakan coba lagi.', 'error');
+      }
+      
+      // Reset button
+      submitBtn.disabled = false;
+      submitText.classList.remove('hidden');
+      submitLoading.classList.add('hidden');
+    };
+
+    // Skip popup survey
+    const skipPopupSurvey = () => {
+      serviceSurveyModal.classList.add('hidden');
+      
+      // Show success message
+      document.getElementById('registrationNumber').textContent = currentRegistration.registrationNumber;
+      registrationForm.classList.add('hidden');
+      successMessage.classList.remove('hidden');
     };
 
     // Rating system
-    const handleRatingClick = (rating) => {
-      selectedRating = rating;
-      document.getElementById('surveyRating').value = rating;
+    const initializeRating = () => {
+      const ratingBtns = document.querySelectorAll('.rating-btn');
+      const ratingText = document.getElementById('ratingText');
+      const ratingInput = document.getElementById('rating');
       
-      // Update button styles
-      document.querySelectorAll('.rating-btn').forEach((btn, index) => {
-        if (index < rating) {
-          btn.classList.add('bg-amber-100', 'border-amber-400', 'text-amber-600');
-          btn.classList.remove('border-slate-200');
-        } else {
-          btn.classList.remove('bg-amber-100', 'border-amber-400', 'text-amber-600');
-          btn.classList.add('border-slate-200');
-        }
+      const ratingLabels = {
+        1: 'Sangat Tidak Puas',
+        2: 'Tidak Puas', 
+        3: 'Cukup Puas',
+        4: 'Puas',
+        5: 'Sangat Puas'
+      };
+      
+      ratingBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const rating = parseInt(btn.dataset.rating);
+          selectedRating = rating;
+          ratingInput.value = rating;
+          
+          // Update visual state
+          ratingBtns.forEach((b, index) => {
+            if (index < rating) {
+              b.classList.add('bg-amber-400', 'border-amber-400', 'text-white');
+              b.classList.remove('border-slate-200');
+            } else {
+              b.classList.remove('bg-amber-400', 'border-amber-400', 'text-white');
+              b.classList.add('border-slate-200');
+            }
+          });
+          
+          // Update text
+          ratingText.textContent = ratingLabels[rating];
+          ratingText.classList.add('text-amber-600', 'font-semibold');
+        });
       });
     };
 
-    // Event listeners
-    guestForm.addEventListener('submit', handleFormSubmit);
-    surveyForm.addEventListener('submit', handleSurveySubmit);
+    // Popup rating system
+    const initializePopupRating = () => {
+      const popupRatingBtns = document.querySelectorAll('.popup-rating-btn');
+      const popupRatingText = document.getElementById('popupRatingText');
+      const popupRatingInput = document.getElementById('popupRating');
+      
+      const ratingLabels = {
+        1: 'Sangat Tidak Puas',
+        2: 'Tidak Puas', 
+        3: 'Cukup Puas',
+        4: 'Puas',
+        5: 'Sangat Puas'
+      };
+      
+      popupRatingBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const rating = parseInt(btn.dataset.rating);
+          popupSelectedRating = rating;
+          popupRatingInput.value = rating;
+          
+          // Update visual state
+          popupRatingBtns.forEach((b, index) => {
+            if (index < rating) {
+              b.classList.add('bg-amber-400', 'border-amber-400', 'text-white');
+              b.classList.remove('border-slate-200');
+            } else {
+              b.classList.remove('bg-amber-400', 'border-amber-400', 'text-white');
+              b.classList.add('border-slate-200');
+            }
+          });
+          
+          // Update text
+          popupRatingText.textContent = ratingLabels[rating];
+          popupRatingText.classList.add('text-amber-600', 'font-semibold');
+        });
+      });
+    };
     
-    closeModal.addEventListener('click', showSurveyModal);
-    addAnother.addEventListener('click', () => {
-      hideSuccessModal();
-      showToast('Silakan isi formulir untuk tamu berikutnya', 'info');
-    });
-    
-    skipSurvey.addEventListener('click', hideSurveyModal);
-    
-    // Rating buttons
-    document.querySelectorAll('.rating-btn').forEach((btn, index) => {
-      btn.addEventListener('click', () => handleRatingClick(index + 1));
-    });
-    
-    // Close modals when clicking outside
-    successModal.addEventListener('click', (e) => {
-      if (e.target === successModal) {
-        showSurveyModal();
-      }
-    });
-    
-    surveyModal.addEventListener('click', (e) => {
-      if (e.target === surveyModal) {
-        hideSurveyModal();
-      }
-    });
+    // Navigation handlers
+    const showNewRegistration = () => {
+      successMessage.classList.add('hidden');
+      surveyForm.classList.add('hidden');
+      surveySuccess.classList.add('hidden');
+      serviceSurveyModal.classList.add('hidden');
+      registrationForm.classList.remove('hidden');
+      
+      // Reset forms
+      guestForm.reset();
+      resetPopupSurvey();
+      currentRegistration = null;
+    };
 
+    const resetPopupSurvey = () => {
+      popupSelectedRating = 0;
+      document.getElementById('popupRating').value = '';
+      document.getElementById('popupComment').value = '';
+      document.getElementById('popupRatingText').textContent = 'Pilih rating dari 1-5 bintang';
+      document.getElementById('popupRatingText').classList.remove('text-amber-600', 'font-semibold');
+      
+      // Reset rating buttons
+      document.querySelectorAll('.popup-rating-btn').forEach(btn => {
+        btn.classList.remove('bg-amber-400', 'border-amber-400', 'text-white');
+        btn.classList.add('border-slate-200');
+      });
+    };
+    
+    const showSurvey = () => {
+      successMessage.classList.add('hidden');
+      surveyForm.classList.remove('hidden');
+      
+      // Reset survey form
+      selectedRating = 0;
+      document.getElementById('rating').value = '';
+      document.getElementById('comment').value = '';
+      document.getElementById('ratingText').textContent = 'Pilih rating dari 1-5 bintang';
+      document.getElementById('ratingText').classList.remove('text-amber-600', 'font-semibold');
+      
+      // Reset rating buttons
+      document.querySelectorAll('.rating-btn').forEach(btn => {
+        btn.classList.remove('bg-amber-400', 'border-amber-400', 'text-white');
+        btn.classList.add('border-slate-200');
+      });
+    };
+    
+    const skipSurvey = () => {
+      surveyForm.classList.add('hidden');
+      registrationForm.classList.remove('hidden');
+      
+      // Reset form
+      guestForm.reset();
+      currentRegistration = null;
+      
+      showToast('Terima kasih atas kunjungan Anda!', 'info');
+    };
+    
+    const finishProcess = () => {
+      surveySuccess.classList.add('hidden');
+      registrationForm.classList.remove('hidden');
+      
+      // Reset form
+      guestForm.reset();
+      currentRegistration = null;
+      
+      showToast('Terima kasih atas kunjungan dan feedback Anda!', 'success');
+    };
+    
+    // Event listeners
+    guestForm.addEventListener('submit', handleGuestRegistration);
+    feedbackForm.addEventListener('submit', handleSurveySubmission);
+    popupSurveyForm.addEventListener('submit', handlePopupSurveySubmission);
+    
+    document.getElementById('newRegistrationBtn').addEventListener('click', showNewRegistration);
+    document.getElementById('surveyBtn').addEventListener('click', showSurvey);
+    document.getElementById('skipSurveyBtn').addEventListener('click', skipSurvey);
+    document.getElementById('finishBtn').addEventListener('click', finishProcess);
+    document.getElementById('skipPopupSurvey').addEventListener('click', skipPopupSurvey);
+    document.getElementById('refreshGuestList').addEventListener('click', renderGuestList);
+    
+    // Close popup when clicking outside
+    serviceSurveyModal.addEventListener('click', (e) => {
+      if (e.target === serviceSurveyModal) {
+        skipPopupSurvey();
+      }
+    });
+    
+    // Initialize
+    initializeRating();
+    initializePopupRating();
+    renderGuestList();
+    
+    // Auto-focus first input
+    document.getElementById('nama').focus();
+    
+    // Form validation on input
+    document.querySelectorAll('input[required], select[required]').forEach(field => {
+      field.addEventListener('input', () => {
+        if (field.value.trim()) {
+          field.classList.remove('border-rose-500');
+        }
+      });
+    });
+    
     // Phone number formatting
     document.getElementById('telepon').addEventListener('input', (e) => {
-      let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
-      
-      // Ensure it starts with 08 or +62
-      if (value.length > 0 && !value.startsWith('08') && !value.startsWith('62')) {
-        if (value.startsWith('8')) {
-          value = '0' + value;
-        }
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.startsWith('0')) {
+        value = '+62' + value.substring(1);
+      } else if (!value.startsWith('+62')) {
+        value = '+62' + value;
       }
-      
       e.target.value = value;
     });
-
-    // Initialize
-    updateClock();
-    updateRecentVisitors();
     
-    // Update clock every minute
-    setInterval(updateClock, 60000);
-    
-    // Update recent visitors every 30 seconds
-    setInterval(updateRecentVisitors, 30000);
+    console.log('🏛️ Buku Tamu Digital Kabupaten Tapin - Ready!');
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'985797090304ab55',t:'MTc1ODk0MDM0MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9858618193d14115',t:'MTc1ODk0ODYzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
