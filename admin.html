@@ -86,6 +86,173 @@
 </head>
 <body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-900">
   
+  <!-- Login Screen -->
+  <div id="loginScreen" class="fixed inset-0 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 flex items-center justify-center z-50">
+    <div class="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md mx-4 animate-fade-in-up">
+      <div class="text-center mb-8">
+        <div class="w-20 h-20 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <img 
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Lambang_Kabupaten_Tapin.png/150px-Lambang_Kabupaten_Tapin.png" 
+            alt="Logo Kabupaten Tapin" 
+            class="w-12 h-12 object-contain"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-indigo-600 hidden" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,7C13.4,7 14.8,8.6 14.8,10V11H16V18H8V11H9.2V10C9.2,8.6 10.6,7 12,7M12,8.2C11.2,8.2 10.4,8.7 10.4,10V11H13.6V10C13.6,8.7 12.8,8.2 12,8.2Z"/>
+          </svg>
+        </div>
+        <h1 class="text-2xl font-bold text-slate-900 mb-2">Admin Panel</h1>
+        <p class="text-slate-600">Buku Tamu Digital Kabupaten Tapin</p>
+      </div>
+      
+      <form id="loginForm" class="space-y-6">
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">Username</label>
+          <div class="relative">
+            <input 
+              type="text" 
+              id="loginUsername" 
+              required
+              class="w-full px-4 py-3 pl-12 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+              placeholder="Masukkan username"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-400 absolute left-4 top-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+            </svg>
+          </div>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">Password</label>
+          <div class="relative">
+            <input 
+              type="password" 
+              id="loginPassword" 
+              required
+              class="w-full px-4 py-3 pl-12 pr-12 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+              placeholder="Masukkan password"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-400 absolute left-4 top-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"/>
+            </svg>
+            <button 
+              type="button" 
+              id="togglePassword" 
+              class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 transition"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <div class="flex items-center justify-between">
+          <label class="flex items-center">
+            <input type="checkbox" id="rememberMe" class="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500">
+            <span class="ml-2 text-sm text-slate-600">Ingat saya</span>
+          </label>
+          <button type="button" onclick="showForgotPassword()" class="text-sm text-indigo-600 hover:text-indigo-700 font-semibold">
+            Lupa password?
+          </button>
+        </div>
+        
+        <button 
+          type="submit" 
+          class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-xl font-semibold transition transform hover:scale-105 active:scale-95"
+        >
+          Masuk ke Admin Panel
+        </button>
+        
+        <div id="loginError" class="hidden bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-xl text-sm">
+          <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
+            </svg>
+            <span id="loginErrorText">Username atau password salah</span>
+          </div>
+        </div>
+        
+        <div class="text-center">
+          <p class="text-xs text-slate-500">
+            Sistem keamanan berlapis untuk melindungi data
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Forgot Password Modal -->
+  <div id="forgotPasswordModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-60 hidden flex items-center justify-center">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md mx-4 animate-fade-in-up">
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-amber-600" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M11,18H13V16H11V18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,6A4,4 0 0,0 8,10H10A2,2 0 0,1 12,8A2,2 0 0,1 14,10C14,12 11,11.75 11,15H13C13,12.75 16,12.5 16,10A4,4 0 0,0 12,6Z"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">Reset Password</h3>
+        <p class="text-slate-600 text-sm">Hubungi administrator sistem untuk reset password</p>
+      </div>
+      
+      <div class="space-y-4">
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+          <h4 class="font-semibold text-blue-900 mb-2">Kontak Administrator:</h4>
+          <div class="space-y-2 text-sm text-blue-800">
+            <p>📧 admin@tapinkab.go.id</p>
+            <p>📞 (0517) 21234</p>
+            <p>🏢 Bagian IT Kabupaten Tapin</p>
+          </div>
+        </div>
+        
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4">
+          <h4 class="font-semibold text-amber-900 mb-2">Informasi yang Diperlukan:</h4>
+          <ul class="text-sm text-amber-800 space-y-1">
+            <li>• Nama lengkap</li>
+            <li>• Jabatan/Bagian</li>
+            <li>• Nomor identitas pegawai</li>
+            <li>• Alasan reset password</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="flex gap-3 mt-6">
+        <button onclick="closeForgotPassword()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 py-2 px-4 rounded-xl font-semibold transition">
+          Tutup
+        </button>
+        <button onclick="contactAdmin()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-xl font-semibold transition">
+          Hubungi Admin
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Session Timeout Warning -->
+  <div id="sessionWarning" class="fixed top-4 right-4 z-60 hidden">
+    <div class="bg-amber-600 text-white px-6 py-4 rounded-xl shadow-2xl max-w-sm">
+      <div class="flex items-center gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M16.2,16.2L11,13V7H12.5V12.2L17,14.9L16.2,16.2Z"/>
+        </svg>
+        <div>
+          <p class="font-semibold">Sesi akan berakhir</p>
+          <p class="text-sm">dalam <span id="sessionCountdown">5</span> menit</p>
+        </div>
+      </div>
+      <div class="flex gap-2 mt-3">
+        <button onclick="extendSession()" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg text-sm font-semibold transition">
+          Perpanjang
+        </button>
+        <button onclick="dismissWarning()" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg text-sm font-semibold transition">
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Main Admin Interface (Hidden by default) -->
+  <div id="adminInterface" class="hidden">
+  
   <!-- Sidebar -->
   <div id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-white border-r border-slate-200 shadow-xl z-40 sidebar">
     <div class="p-6 border-b border-slate-200">
@@ -780,6 +947,8 @@
     </section>
 
   </div>
+  
+  </div> <!-- End Admin Interface -->
 
   <!-- Toast Notification -->
   <div id="toast" class="fixed bottom-5 right-5 z-50 hidden">
@@ -807,10 +976,267 @@
     const STORAGE_KEY = 'bukuTamuKabupaten_v1';
     const SURVEY_KEY = 'surveyData_v1';
     const SETTINGS_KEY = 'adminSettings_v1';
+    const AUTH_KEY = 'adminAuth_v1';
+    const SESSION_KEY = 'adminSession_v1';
+    
+    // Default admin credentials (in production, this should be hashed and stored securely)
+    const DEFAULT_CREDENTIALS = {
+      username: 'admin',
+      password: 'admin123',
+      email: 'admin@tapinkab.go.id'
+    };
+    
+    // Session management
+    let sessionTimeout;
+    let sessionWarningTimeout;
+    let isLoggedIn = false;
+    const SESSION_DURATION = 30 * 60 * 1000; // 30 minutes
+    const WARNING_TIME = 5 * 60 * 1000; // 5 minutes before expiry
     
     // State
     let currentSection = 'dashboard';
     let visitsChart, ratingsChart, detailedRatingsChart, satisfactionTrendChart;
+    
+    // Authentication Functions
+    const initializeAuth = () => {
+      // Check if user is already logged in
+      const session = getFromStorage(SESSION_KEY);
+      const currentTime = new Date().getTime();
+      
+      if (session && session.expiry > currentTime) {
+        // Valid session exists
+        isLoggedIn = true;
+        showAdminInterface();
+        startSessionTimer();
+      } else {
+        // No valid session, show login
+        showLoginScreen();
+      }
+      
+      // Setup login form
+      setupLoginForm();
+    };
+    
+    const setupLoginForm = () => {
+      const loginForm = document.getElementById('loginForm');
+      const togglePassword = document.getElementById('togglePassword');
+      const passwordInput = document.getElementById('loginPassword');
+      
+      // Password toggle functionality
+      togglePassword.addEventListener('click', () => {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        
+        // Update icon
+        const icon = type === 'password' 
+          ? 'M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z'
+          : 'M11.83,9L15,12.16C15,12.11 15,12.05 15,12A3,3 0 0,0 12,9C11.94,9 11.89,9 11.83,9M7.53,9.8L9.08,11.35C9.03,11.56 9,11.77 9,12A3,3 0 0,0 12,15C12.22,15 12.44,14.97 12.65,14.92L14.2,16.47C13.53,16.8 12.79,17 12,17A5,5 0 0,1 7,12C7,11.21 7.2,10.47 7.53,9.8M2,4.27L4.28,6.55L4.73,7C3.08,8.3 1.78,10 1,12C2.73,16.39 7,19.5 12,19.5C13.55,19.5 15.03,19.2 16.38,18.66L16.81,19.09L19.73,22L21,20.73L3.27,3M12,7A5,5 0 0,1 17,12C17,12.64 16.87,13.26 16.64,13.82L19.57,16.75C21.07,15.5 22.27,13.86 23,12C21.27,7.61 17,4.5 12,4.5C10.6,4.5 9.26,4.75 8,5.2L10.17,7.35C10.76,7.13 11.37,7 12,7Z';
+        
+        togglePassword.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="${icon}"/></svg>`;
+      });
+      
+      // Form submission
+      loginForm.addEventListener('submit', handleLogin);
+      
+      // Enter key support
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !isLoggedIn) {
+          e.preventDefault();
+          handleLogin(e);
+        }
+      });
+    };
+    
+    const handleLogin = (e) => {
+      e.preventDefault();
+      
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const rememberMe = document.getElementById('rememberMe').checked;
+      const errorDiv = document.getElementById('loginError');
+      const errorText = document.getElementById('loginErrorText');
+      
+      // Hide previous errors
+      errorDiv.classList.add('hidden');
+      
+      // Basic validation
+      if (!username || !password) {
+        showLoginError('Username dan password harus diisi');
+        return;
+      }
+      
+      // Check credentials
+      const storedCredentials = getFromStorage(AUTH_KEY);
+      const credentials = storedCredentials.length > 0 ? storedCredentials[0] : DEFAULT_CREDENTIALS;
+      
+      if (username === credentials.username && password === credentials.password) {
+        // Successful login
+        const sessionData = {
+          username: username,
+          loginTime: new Date().getTime(),
+          expiry: new Date().getTime() + SESSION_DURATION,
+          rememberMe: rememberMe
+        };
+        
+        saveToStorage(SESSION_KEY, sessionData);
+        isLoggedIn = true;
+        
+        // Show success and transition
+        showToast('Login berhasil! Selamat datang di Admin Panel', 'success');
+        
+        setTimeout(() => {
+          showAdminInterface();
+          startSessionTimer();
+        }, 1000);
+        
+      } else {
+        // Failed login
+        showLoginError('Username atau password salah');
+        
+        // Add shake animation
+        const loginForm = document.getElementById('loginForm');
+        loginForm.style.animation = 'shake 0.5s ease-in-out';
+        setTimeout(() => {
+          loginForm.style.animation = '';
+        }, 500);
+      }
+    };
+    
+    const showLoginError = (message) => {
+      const errorDiv = document.getElementById('loginError');
+      const errorText = document.getElementById('loginErrorText');
+      
+      errorText.textContent = message;
+      errorDiv.classList.remove('hidden');
+      
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        errorDiv.classList.add('hidden');
+      }, 5000);
+    };
+    
+    const showLoginScreen = () => {
+      document.getElementById('loginScreen').classList.remove('hidden');
+      document.getElementById('adminInterface').classList.add('hidden');
+      
+      // Focus on username field
+      setTimeout(() => {
+        document.getElementById('loginUsername').focus();
+      }, 300);
+    };
+    
+    const showAdminInterface = () => {
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('adminInterface').classList.remove('hidden');
+      
+      // Initialize dashboard
+      loadDashboard();
+    };
+    
+    const startSessionTimer = () => {
+      // Clear existing timers
+      if (sessionTimeout) clearTimeout(sessionTimeout);
+      if (sessionWarningTimeout) clearTimeout(sessionWarningTimeout);
+      
+      // Set warning timer (5 minutes before expiry)
+      sessionWarningTimeout = setTimeout(() => {
+        showSessionWarning();
+      }, SESSION_DURATION - WARNING_TIME);
+      
+      // Set logout timer
+      sessionTimeout = setTimeout(() => {
+        forceLogout('Sesi telah berakhir');
+      }, SESSION_DURATION);
+    };
+    
+    const showSessionWarning = () => {
+      const warningDiv = document.getElementById('sessionWarning');
+      const countdown = document.getElementById('sessionCountdown');
+      
+      warningDiv.classList.remove('hidden');
+      
+      let timeLeft = 5; // 5 minutes
+      countdown.textContent = timeLeft;
+      
+      const countdownInterval = setInterval(() => {
+        timeLeft--;
+        countdown.textContent = timeLeft;
+        
+        if (timeLeft <= 0) {
+          clearInterval(countdownInterval);
+        }
+      }, 60000); // Update every minute
+    };
+    
+    const extendSession = () => {
+      const newSessionData = {
+        username: getFromStorage(SESSION_KEY).username,
+        loginTime: new Date().getTime(),
+        expiry: new Date().getTime() + SESSION_DURATION,
+        rememberMe: getFromStorage(SESSION_KEY).rememberMe
+      };
+      
+      saveToStorage(SESSION_KEY, newSessionData);
+      dismissWarning();
+      startSessionTimer();
+      showToast('Sesi berhasil diperpanjang', 'success');
+    };
+    
+    const dismissWarning = () => {
+      document.getElementById('sessionWarning').classList.add('hidden');
+    };
+    
+    const forceLogout = (reason = 'Logout berhasil') => {
+      // Clear session data
+      localStorage.removeItem(SESSION_KEY);
+      
+      // Clear timers
+      if (sessionTimeout) clearTimeout(sessionTimeout);
+      if (sessionWarningTimeout) clearTimeout(sessionWarningTimeout);
+      
+      // Reset state
+      isLoggedIn = false;
+      
+      // Hide warnings
+      dismissWarning();
+      
+      // Show login screen
+      showLoginScreen();
+      
+      // Show message
+      showToast(reason, 'info');
+      
+      // Clear form
+      document.getElementById('loginForm').reset();
+    };
+    
+    const showForgotPassword = () => {
+      document.getElementById('forgotPasswordModal').classList.remove('hidden');
+    };
+    
+    const closeForgotPassword = () => {
+      document.getElementById('forgotPasswordModal').classList.add('hidden');
+    };
+    
+    const contactAdmin = () => {
+      // Open email client
+      const subject = encodeURIComponent('Reset Password - Buku Tamu Digital');
+      const body = encodeURIComponent('Halo Administrator,\n\nSaya memerlukan bantuan untuk reset password akun admin panel buku tamu digital.\n\nInformasi:\n- Nama: \n- Jabatan: \n- Bagian: \n- Nomor Identitas: \n- Alasan: \n\nTerima kasih.');
+      
+      window.open(`mailto:admin@tapinkab.go.id?subject=${subject}&body=${body}`, '_blank');
+      closeForgotPassword();
+    };
+    
+    // Add shake animation to CSS
+    const shakeStyle = document.createElement('style');
+    shakeStyle.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+      }
+    `;
+    document.head.appendChild(shakeStyle);
     
     // Utilities
     const showToast = (message, type = 'success') => {
@@ -1623,10 +2049,7 @@
     
     const logout = () => {
       if (confirm('Yakin ingin logout?')) {
-        showLoading();
-        setTimeout(() => {
-          window.location.href = 'index.html';
-        }, 1000);
+        forceLogout('Logout berhasil');
       }
     };
     
@@ -1652,19 +2075,45 @@
     
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
-      loadDashboard();
+      // Initialize authentication first
+      initializeAuth();
+      
       updateCurrentTime();
       setInterval(updateCurrentTime, 60000); // Update every minute
       
-      // Auto-refresh dashboard every 5 minutes
+      // Auto-refresh dashboard every 5 minutes (only if logged in)
       setInterval(() => {
-        if (currentSection === 'dashboard') {
+        if (currentSection === 'dashboard' && isLoggedIn) {
           loadDashboard();
         }
       }, 300000);
+      
+      // Activity detection for session management
+      let lastActivity = new Date().getTime();
+      
+      document.addEventListener('click', () => {
+        lastActivity = new Date().getTime();
+      });
+      
+      document.addEventListener('keypress', () => {
+        lastActivity = new Date().getTime();
+      });
+      
+      // Check for inactivity every minute
+      setInterval(() => {
+        if (isLoggedIn) {
+          const now = new Date().getTime();
+          const inactiveTime = now - lastActivity;
+          
+          // If inactive for more than session duration, force logout
+          if (inactiveTime > SESSION_DURATION) {
+            forceLogout('Sesi berakhir karena tidak aktif');
+          }
+        }
+      }, 60000);
     });
     
     console.log('🏛️ Admin Panel Buku Tamu Digital - Ready!');
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9858712ea359fdab',t:'MTc1ODk0OTI3Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98587dd12177cdfa',t:'MTc1ODk0OTc5My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
