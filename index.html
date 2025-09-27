@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>Buku Tamu Digital - Pemerintah Kabupaten Tapin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    :root { color-scheme: light; }
+    body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji'; }
+    
+    /* Custom animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .animate-fade-in-up { animation: fadeInUp 0.6s ease-out; }
+    .animate-slide-in-right { animation: slideInRight 0.6s ease-out; }
+    .animate-pulse-gentle { animation: pulse 2s infinite; }
+    
+    /* Custom scrollbar */
+    .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: rgba(148, 163, 184, 0.1); border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.3); border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.5); }
+    
+    /* Form focus effects */
+    .form-input:focus { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+    
+    /* Success animation */
+    @keyframes checkmark {
+      0% { stroke-dashoffset: 100; }
+      100% { stroke-dashoffset: 0; }
+    }
+    
+    .checkmark { stroke-dasharray: 100; animation: checkmark 0.8s ease-in-out; }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-900">
+  <div class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16 sm:h-20">
+          <div class="flex items-center gap-4">
+            <!-- Logo -->
+            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center shadow-lg animate-pulse-gentle">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-10 sm:h-10 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+              </svg>
+            </div>
+            <div class="animate-fade-in-up">
+              <h1 class="text-xl sm:text-2xl font-bold text-slate-900">Buku Tamu Digital</h1>
+              <p class="text-slate-600 font-medium text-sm sm:text-base">Pemerintah Kabupaten Tapin</p>
+            </div>
+          </div>
+          
+          <div class="flex items-center gap-3 sm:gap-4 animate-slide-in-right">
+            <div class="text-right hidden sm:block">
+              <p class="text-sm text-slate-500">Waktu Sekarang</p>
+              <p id="currentTime" class="text-lg font-semibold text-slate-900">—:—</p>
+            </div>
+            <a href="admin.html" class="inline-flex items-center gap-2 bg-slate-600 hover:bg-slate-700 text-white px-3 sm:px-4 py-2 rounded-lg transition text-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+              </svg>
+              <span class="hidden sm:inline">Admin</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-4 sm:p-6 lg:p-8">
+      <div class="max-w-4xl mx-auto">
+        <!-- Welcome Section -->
+        <div class="text-center mb-8 sm:mb-12 animate-fade-in-up">
+          <div class="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl animate-pulse-gentle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 sm:w-12 sm:h-12 text-white" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zM4 18v-4h3v4h2v-7.5c0-.83.67-1.5 1.5-1.5S12 9.67 12 10.5V18h2v-4h3v4h2V8.5c0-1.1-.9-2-2-2H7c-1.1 0-2 .9-2 2V18H4z"/>
+            </svg>
+          </div>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+            Selamat Datang
+          </h2>
+          <p class="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            Silakan isi formulir di bawah ini untuk mendaftarkan kunjungan Anda ke 
+            <span class="font-semibold text-emerald-600">Pemerintah Kabupaten Tapin</span>
+          </p>
+        </div>
+
+        <!-- Guest Form -->
+        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-fade-in-up">
+          <div class="bg-gradient-to-r from-emerald-600 to-teal-600 p-6 sm:p-8">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-2xl font-bold text-white">Formulir Tamu</h3>
+                <p class="text-emerald-100">Mohon lengkapi data diri Anda</p>
+              </div>
+            </div>
+          </div>
+
+          <form id="guestForm" class="p-6 sm:p-8 space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Nama Lengkap -->
+              <div class="md:col-span-2">
+                <label for="nama" class="block text-sm font-semibold text-slate-700 mb-2">
+                  Nama Lengkap <span class="text-rose-500">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  id="nama" 
+                  name="nama" 
+                  required 
+                  class="form-input w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition"
+                  placeholder="Masukkan nama lengkap Anda"
+                >
+              </div>
+
+              <!-- Instansi -->
+              <div>
+                <label for="instansi" class="block text-sm font-semibold text-slate-700 mb-2">
+                  Instansi/Organisasi <span class="text-rose-500">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  id="instansi" 
+                  name="instansi" 
+                  required 
+                  class="form-input w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition"
+                  placeholder="Nama instansi/organisasi"
+                >
+              </div>
+
+              <!-- Nomor Telepon -->
+              <div>
+                <label for="telepon" class="block text-sm font-semibold text-slate-700 mb-2">
+                  Nomor Telepon <span class="text-rose-500">*</span>
+                </label>
+                <input 
+                  type="tel" 
+                  id="telepon" 
+                  name="telepon" 
+                  required 
+                  class="form-input w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition"
+                  placeholder="08xxxxxxxxxx"
+                >
+              </div>
+
+              <!-- Keperluan -->
+              <div>
+                <label for="keperluan" class="block text-sm font-semibold text-slate-700 mb-2">
+                  Keperluan <span class="text-rose-500">*</span>
+                </label>
+                <select 
+                  id="keperluan" 
+                  name="keperluan" 
+                  required 
+                  class="form-input w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition"
+                >
+                  <option value="">Pilih keperluan kunjungan</option>
+                  <option value="Konsultasi">Konsultasi</option>
+                  <option value="Pengajuan Surat">Pengajuan Surat</option>
+                  <option value="Rapat/Meeting">Rapat/Meeting</option>
+                  <option value="Pengaduan">Pengaduan</option>
+                  <option value="Perizinan">Perizinan</option>
+                  <option value="Kerjasama">Kerjasama</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
+              </div>
+
+              <!-- Bagian yang Dituju -->
+              <div>
+                <label for="bagian" class="block text-sm font-semibold text-slate-700 mb-2">
+                  Bagian yang Dituju <span class="text-rose-500">*</span>
+                </label>
+                <select 
+                  id="bagian" 
+                  name="bagian" 
+                  required 
+                  class="form-input w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition"
+                >
+                  <option value="">Pilih bagian yang dituju</option>
+                  <option value="Sekretariat Daerah">Sekretariat Daerah</option>
+                  <option value="Bagian Umum">Bagian Umum</option>
+                  <option value="Bagian Keuangan">Bagian Keuangan</option>
+                  <option value="Bagian Hukum">Bagian Hukum</option>
+                  <option value="Bagian Pembangunan">Bagian Pembangunan</option>
+                  <option value="Bagian Pemerintahan">Bagian Pemerintahan</option>
+                  <option value="Bagian Kesejahteraan Rakyat">Bagian Kesejahteraan Rakyat</option>
+                  <option value="Bagian Ekonomi">Bagian Ekonomi</option>
+                  <option value="DPRD">DPRD</option>
+                  <option value="Inspektorat">Inspektorat</option>
+                </select>
+              </div>
+
+              <!-- Bertemu Dengan -->
+              <div class="md:col-span-2">
+                <label for="bertemu" class="block text-sm font-semibold text-slate-700 mb-2">
+                  Bertemu Dengan
+                </label>
+                <input 
+                  type="text" 
+                  id="bertemu" 
+                  name="bertemu" 
+                  class="form-input w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition"
+                  placeholder="Nama pejabat/pegawai yang akan ditemui (opsional)"
+                >
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="pt-6">
+              <button 
+                type="submit" 
+                id="submitBtn"
+                class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white py-4 px-6 rounded-xl font-semibold text-lg shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-[1.02]"
+              >
+                <span id="submitText" class="flex items-center justify-center gap-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                  </svg>
+                  Daftar Kunjungan
+                </span>
+                <span id="submitLoading" class="hidden flex items-center justify-center gap-3">
+                  <svg class="animate-spin w-5 h-5" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                  </svg>
+                  Mendaftarkan...
+                </span>
+              </button>
+            </div>
+
+            <!-- Info -->
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+              <div class="flex items-start gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-500 mt-0.5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,7H13V9H11V7M11,11H13V17H11V11Z"/>
+                </svg>
+                <div>
+                  <p class="text-blue-700 text-sm font-medium mb-1">Informasi Penting</p>
+                  <ul class="text-blue-600 text-sm space-y-1">
+                    <li>• Pastikan data yang diisi sudah benar</li>
+                    <li>• Siapkan dokumen identitas yang diperlukan</li>
+                    <li>• Patuhi protokol kesehatan yang berlaku</li>
+                    <li>• Jangan lupa melakukan check-out setelah selesai</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Recent Visitors -->
+        <div class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl border border-slate-200 animate-slide-in-right">
+          <div class="p-6 sm:p-8 border-b border-slate-200">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-gradient-to-br from-slate-600 to-slate-800 rounded-xl flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 4V6C15 7.1 14.1 8 13 8S11 7.1 11 6V4L5 7V9C5 10.1 5.9 11 7 11S9 10.1 9 9V11C9 12.1 9.9 13 11 13H13C14.1 13 15 12.1 15 11V9C15 10.1 15.9 11 17 11S19 10.1 19 9Z"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl sm:text-2xl font-bold text-slate-900">Tamu Hari Ini</h3>
+                <p class="text-slate-600">Daftar pengunjung yang telah terdaftar</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="p-6 sm:p-8">
+            <div id="recentVisitors" class="space-y-4 custom-scrollbar max-h-96 overflow-y-auto">
+              <!-- Recent visitors will be populated here -->
+            </div>
+            
+            <div id="noVisitors" class="text-center py-12 hidden">
+              <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-slate-400" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zM4 18v-4h3v4h2v-7.5c0-.83.67-1.5 1.5-1.5S12 9.67 12 10.5V18h2v-4h3v4h2V8.5c0-1.1-.9-2-2-2H7c-1.1 0-2 .9-2 2V18H4z"/>
+                </svg>
+              </div>
+              <p class="text-slate-500 text-lg">Belum ada tamu hari ini</p>
+              <p class="text-slate-400 text-sm mt-2">Daftar akan muncul setelah ada yang mengisi formulir</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="text-center">
+          <div class="flex items-center justify-center gap-3 mb-4">
+            <div class="w-8 h-8 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-lg flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+              </svg>
+            </div>
+            <span class="text-lg font-semibold text-slate-900">Pemerintah Kabupaten Tapin</span>
+          </div>
+          <p class="text-slate-500 text-sm mb-4">
+            Jl. A. Yani No. 1, Rantau, Kabupaten Tapin, Kalimantan Selatan 70815
+          </p>
+          <p class="text-slate-400 text-xs">
+            © 2024 Pemerintah Kabupaten Tapin. Sistem Buku Tamu Digital.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-auto transform transition-all">
+        <div class="p-8 text-center">
+          <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white checkmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+          </div>
+          
+          <h3 class="text-2xl font-bold text-slate-900 mb-4">Pendaftaran Berhasil!</h3>
+          <p class="text-slate-600 mb-6">
+            Terima kasih telah mendaftar. Data Anda telah tersimpan dan Anda dapat melanjutkan kunjungan.
+          </p>
+          
+          <div id="visitorInfo" class="bg-slate-50 rounded-xl p-4 mb-6 text-left">
+            <!-- Visitor info will be populated here -->
+          </div>
+          
+          <div class="flex gap-3">
+            <button id="closeModal" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 py-3 px-4 rounded-lg font-semibold transition">
+              Tutup
+            </button>
+            <button id="addAnother" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 px-4 rounded-lg font-semibold transition">
+              Daftar Lagi
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Survey Modal -->
+    <div id="surveyModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-auto">
+        <div class="p-6 sm:p-8">
+          <div class="text-center mb-6">
+            <div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Survei Kepuasan</h3>
+            <p class="text-slate-600">Bagaimana pengalaman Anda hari ini?</p>
+          </div>
+          
+          <form id="surveyForm" class="space-y-6">
+            <!-- Rating -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-3">
+                Berikan rating untuk pelayanan kami
+              </label>
+              <div class="flex justify-center gap-2">
+                <button type="button" class="rating-btn w-12 h-12 rounded-full border-2 border-slate-200 hover:border-amber-400 hover:bg-amber-50 transition flex items-center justify-center text-2xl" data-rating="1">⭐</button>
+                <button type="button" class="rating-btn w-12 h-12 rounded-full border-2 border-slate-200 hover:border-amber-400 hover:bg-amber-50 transition flex items-center justify-center text-2xl" data-rating="2">⭐</button>
+                <button type="button" class="rating-btn w-12 h-12 rounded-full border-2 border-slate-200 hover:border-amber-400 hover:bg-amber-50 transition flex items-center justify-center text-2xl" data-rating="3">⭐</button>
+                <button type="button" class="rating-btn w-12 h-12 rounded-full border-2 border-slate-200 hover:border-amber-400 hover:bg-amber-50 transition flex items-center justify-center text-2xl" data-rating="4">⭐</button>
+                <button type="button" class="rating-btn w-12 h-12 rounded-full border-2 border-slate-200 hover:border-amber-400 hover:bg-amber-50 transition flex items-center justify-center text-2xl" data-rating="5">⭐</button>
+              </div>
+              <input type="hidden" id="surveyRating" name="rating" required>
+            </div>
+
+            <!-- Comment -->
+            <div>
+              <label for="surveyComment" class="block text-sm font-semibold text-slate-700 mb-2">
+                Komentar & Saran (Opsional)
+              </label>
+              <textarea 
+                id="surveyComment" 
+                name="comment" 
+                rows="4" 
+                class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-amber-500 focus:ring-4 focus:ring-amber-100 transition resize-none"
+                placeholder="Bagikan pengalaman atau saran Anda..."
+              ></textarea>
+            </div>
+
+            <div class="flex gap-3">
+              <button type="button" id="skipSurvey" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 py-3 px-4 rounded-lg font-semibold transition">
+                Lewati
+              </button>
+              <button type="submit" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white py-3 px-4 rounded-lg font-semibold transition">
+                Kirim
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 hidden">
+      <div id="toastInner" class="px-6 py-4 rounded-xl text-white shadow-2xl max-w-sm transform transition-all duration-300"></div>
+    </div>
+  </div>
+
+  <script>
+    // Constants
+    const STORAGE_KEY = 'bukuTamuKabupaten_v1';
+    const SURVEY_KEY = 'surveyData_v1';
+    
+    // Elements
+    const currentTime = document.getElementById('currentTime');
+    const guestForm = document.getElementById('guestForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitText = document.getElementById('submitText');
+    const submitLoading = document.getElementById('submitLoading');
+    const recentVisitors = document.getElementById('recentVisitors');
+    const noVisitors = document.getElementById('noVisitors');
+    const successModal = document.getElementById('successModal');
+    const surveyModal = document.getElementById('surveyModal');
+    const visitorInfo = document.getElementById('visitorInfo');
+    const closeModal = document.getElementById('closeModal');
+    const addAnother = document.getElementById('addAnother');
+    const surveyForm = document.getElementById('surveyForm');
+    const skipSurvey = document.getElementById('skipSurvey');
+    const toast = document.getElementById('toast');
+    const toastInner = document.getElementById('toastInner');
+    
+    // State
+    let currentVisitorId = null;
+    let selectedRating = 0;
+
+    // Utilities
+    const generateId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
+    
+    const showToast = (message, type = 'success') => {
+      toastInner.textContent = message;
+      toastInner.className = 'px-6 py-4 rounded-xl text-white shadow-2xl max-w-sm transform transition-all duration-300';
+      
+      if (type === 'success') toastInner.classList.add('bg-emerald-600');
+      if (type === 'error') toastInner.classList.add('bg-rose-600');
+      if (type === 'info') toastInner.classList.add('bg-blue-600');
+      
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 4000);
+    };
+
+    const formatDateTime = (dateString) => {
+      const date = new Date(dateString);
+      return date.toLocaleString('id-ID', {
+        weekday: 'short',
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    };
+
+    const isToday = (dateString) => {
+      const date = new Date(dateString);
+      const today = new Date();
+      return date.toDateString() === today.toDateString();
+    };
+
+    // Data management
+    const saveVisitor = (visitorData) => {
+      try {
+        const existingData = localStorage.getItem(STORAGE_KEY);
+        const visitors = existingData ? JSON.parse(existingData) : [];
+        
+        const newVisitor = {
+          id: generateId(),
+          ...visitorData,
+          jamMasuk: new Date().toISOString(),
+          jamKeluar: null
+        };
+        
+        visitors.push(newVisitor);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(visitors));
+        
+        return newVisitor;
+      } catch (error) {
+        console.error('Error saving visitor:', error);
+        return null;
+      }
+    };
+
+    const saveSurvey = (surveyData) => {
+      try {
+        const existingData = localStorage.getItem(SURVEY_KEY);
+        const surveys = existingData ? JSON.parse(existingData) : [];
+        
+        const newSurvey = {
+          id: generateId(),
+          ...surveyData,
+          timestamp: new Date().toISOString()
+        };
+        
+        surveys.push(newSurvey);
+        localStorage.setItem(SURVEY_KEY, JSON.stringify(surveys));
+        
+        return newSurvey;
+      } catch (error) {
+        console.error('Error saving survey:', error);
+        return null;
+      }
+    };
+
+    const loadTodayVisitors = () => {
+      try {
+        const data = localStorage.getItem(STORAGE_KEY);
+        const allVisitors = data ? JSON.parse(data) : [];
+        
+        return allVisitors.filter(visitor => isToday(visitor.jamMasuk));
+      } catch (error) {
+        console.error('Error loading visitors:', error);
+        return [];
+      }
+    };
+
+    // UI Updates
+    const updateClock = () => {
+      const now = new Date();
+      const timeString = now.toLocaleString('id-ID', {
+        weekday: 'long',
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      
+      currentTime.textContent = timeString;
+    };
+
+    const updateRecentVisitors = () => {
+      const todayVisitors = loadTodayVisitors();
+      
+      if (todayVisitors.length === 0) {
+        recentVisitors.classList.add('hidden');
+        noVisitors.classList.remove('hidden');
+        return;
+      }
+      
+      noVisitors.classList.add('hidden');
+      recentVisitors.classList.remove('hidden');
+      
+      // Sort by most recent first
+      const sortedVisitors = todayVisitors.sort((a, b) => 
+        new Date(b.jamMasuk) - new Date(a.jamMasuk)
+      );
+      
+      recentVisitors.innerHTML = sortedVisitors.map(visitor => `
+        <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center shadow-lg">
+              <span class="text-white font-bold text-lg">${visitor.nama.charAt(0).toUpperCase()}</span>
+            </div>
+            <div>
+              <p class="font-semibold text-slate-900">${visitor.nama}</p>
+              <p class="text-sm text-slate-600">${visitor.instansi}</p>
+              <p class="text-xs text-slate-500">${visitor.keperluan} • ${visitor.bagian}</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                visitor.jamKeluar 
+                  ? 'bg-emerald-100 text-emerald-800' 
+                  : 'bg-amber-100 text-amber-800'
+              }">
+                ${visitor.jamKeluar ? '✓ Selesai' : '⏱ Sedang Berkunjung'}
+              </span>
+            </div>
+            <p class="text-sm font-medium text-slate-900">${formatDateTime(visitor.jamMasuk)}</p>
+          </div>
+        </div>
+      `).join('');
+    };
+
+    const showSuccessModal = (visitor) => {
+      currentVisitorId = visitor.id;
+      
+      visitorInfo.innerHTML = `
+        <div class="space-y-2">
+          <div class="flex justify-between">
+            <span class="text-slate-600">Nama:</span>
+            <span class="font-semibold">${visitor.nama}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-600">Instansi:</span>
+            <span class="font-semibold">${visitor.instansi}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-600">Keperluan:</span>
+            <span class="font-semibold">${visitor.keperluan}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-600">Bagian:</span>
+            <span class="font-semibold">${visitor.bagian}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-600">Waktu:</span>
+            <span class="font-semibold">${formatDateTime(visitor.jamMasuk)}</span>
+          </div>
+        </div>
+      `;
+      
+      successModal.classList.remove('hidden');
+    };
+
+    const hideSuccessModal = () => {
+      successModal.classList.add('hidden');
+      currentVisitorId = null;
+    };
+
+    const showSurveyModal = () => {
+      hideSuccessModal();
+      surveyModal.classList.remove('hidden');
+      resetSurveyForm();
+    };
+
+    const hideSurveyModal = () => {
+      surveyModal.classList.add('hidden');
+      resetSurveyForm();
+    };
+
+    const resetSurveyForm = () => {
+      selectedRating = 0;
+      document.getElementById('surveyRating').value = '';
+      document.getElementById('surveyComment').value = '';
+      
+      // Reset rating buttons
+      document.querySelectorAll('.rating-btn').forEach(btn => {
+        btn.classList.remove('bg-amber-100', 'border-amber-400', 'text-amber-600');
+        btn.classList.add('border-slate-200');
+      });
+    };
+
+    const resetForm = () => {
+      guestForm.reset();
+      submitBtn.disabled = false;
+      submitText.classList.remove('hidden');
+      submitLoading.classList.add('hidden');
+    };
+
+    // Form handling
+    const handleFormSubmit = async (e) => {
+      e.preventDefault();
+      
+      // Disable submit button and show loading
+      submitBtn.disabled = true;
+      submitText.classList.add('hidden');
+      submitLoading.classList.remove('hidden');
+      
+      // Simulate processing time
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Get form data
+      const formData = new FormData(guestForm);
+      const visitorData = {
+        nama: formData.get('nama').trim(),
+        instansi: formData.get('instansi').trim(),
+        telepon: formData.get('telepon').trim(),
+        keperluan: formData.get('keperluan'),
+        bagian: formData.get('bagian'),
+        bertemu: formData.get('bertemu').trim() || '-'
+      };
+      
+      // Validate required fields
+      if (!visitorData.nama || !visitorData.instansi || !visitorData.telepon || 
+          !visitorData.keperluan || !visitorData.bagian) {
+        showToast('Mohon lengkapi semua field yang wajib diisi', 'error');
+        submitBtn.disabled = false;
+        submitText.classList.remove('hidden');
+        submitLoading.classList.add('hidden');
+        return;
+      }
+      
+      // Save visitor data
+      const savedVisitor = saveVisitor(visitorData);
+      
+      if (savedVisitor) {
+        // Update recent visitors display
+        updateRecentVisitors();
+        
+        // Reset form
+        resetForm();
+        
+        // Show success modal
+        showSuccessModal(savedVisitor);
+        
+        showToast('Pendaftaran berhasil!', 'success');
+      } else {
+        showToast('Gagal menyimpan data. Silakan coba lagi.', 'error');
+        submitBtn.disabled = false;
+        submitText.classList.remove('hidden');
+        submitLoading.classList.add('hidden');
+      }
+    };
+
+    const handleSurveySubmit = (e) => {
+      e.preventDefault();
+      
+      if (selectedRating === 0) {
+        showToast('Mohon berikan rating terlebih dahulu', 'error');
+        return;
+      }
+      
+      const comment = document.getElementById('surveyComment').value.trim();
+      
+      const surveyData = {
+        visitorId: currentVisitorId,
+        rating: selectedRating,
+        comment: comment
+      };
+      
+      const savedSurvey = saveSurvey(surveyData);
+      
+      if (savedSurvey) {
+        showToast('Terima kasih atas feedback Anda!', 'success');
+        hideSurveyModal();
+      } else {
+        showToast('Gagal menyimpan survei', 'error');
+      }
+    };
+
+    // Rating system
+    const handleRatingClick = (rating) => {
+      selectedRating = rating;
+      document.getElementById('surveyRating').value = rating;
+      
+      // Update button styles
+      document.querySelectorAll('.rating-btn').forEach((btn, index) => {
+        if (index < rating) {
+          btn.classList.add('bg-amber-100', 'border-amber-400', 'text-amber-600');
+          btn.classList.remove('border-slate-200');
+        } else {
+          btn.classList.remove('bg-amber-100', 'border-amber-400', 'text-amber-600');
+          btn.classList.add('border-slate-200');
+        }
+      });
+    };
+
+    // Event listeners
+    guestForm.addEventListener('submit', handleFormSubmit);
+    surveyForm.addEventListener('submit', handleSurveySubmit);
+    
+    closeModal.addEventListener('click', showSurveyModal);
+    addAnother.addEventListener('click', () => {
+      hideSuccessModal();
+      showToast('Silakan isi formulir untuk tamu berikutnya', 'info');
+    });
+    
+    skipSurvey.addEventListener('click', hideSurveyModal);
+    
+    // Rating buttons
+    document.querySelectorAll('.rating-btn').forEach((btn, index) => {
+      btn.addEventListener('click', () => handleRatingClick(index + 1));
+    });
+    
+    // Close modals when clicking outside
+    successModal.addEventListener('click', (e) => {
+      if (e.target === successModal) {
+        showSurveyModal();
+      }
+    });
+    
+    surveyModal.addEventListener('click', (e) => {
+      if (e.target === surveyModal) {
+        hideSurveyModal();
+      }
+    });
+
+    // Phone number formatting
+    document.getElementById('telepon').addEventListener('input', (e) => {
+      let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+      
+      // Ensure it starts with 08 or +62
+      if (value.length > 0 && !value.startsWith('08') && !value.startsWith('62')) {
+        if (value.startsWith('8')) {
+          value = '0' + value;
+        }
+      }
+      
+      e.target.value = value;
+    });
+
+    // Initialize
+    updateClock();
+    updateRecentVisitors();
+    
+    // Update clock every minute
+    setInterval(updateClock, 60000);
+    
+    // Update recent visitors every 30 seconds
+    setInterval(updateRecentVisitors, 30000);
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'985797090304ab55',t:'MTc1ODk0MDM0MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

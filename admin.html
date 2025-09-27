@@ -1,0 +1,1454 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>Admin Panel - Buku Tamu Digital Kabupaten Tapin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    :root { color-scheme: light; }
+    body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji'; }
+    
+    /* Custom animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    
+    .animate-fade-in-up { animation: fadeInUp 0.6s ease-out; }
+    .animate-slide-in-left { animation: slideInLeft 0.6s ease-out; }
+    .animate-pulse-gentle { animation: pulse 2s infinite; }
+    .animate-shake { animation: shake 0.5s ease-in-out; }
+    
+    /* Custom scrollbar */
+    .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: rgba(148, 163, 184, 0.1); border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.3); border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.5); }
+    
+    /* Login form styling */
+    .login-container {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    
+    /* Dashboard grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    /* Print styles */
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; }
+      .print-break { page-break-before: always; }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-900">
+  
+  <!-- Login Screen -->
+  <div id="loginScreen" class="login-container flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full mx-auto overflow-hidden animate-fade-in-up">
+      <div class="bg-gradient-to-r from-indigo-600 to-purple-600 p-8 text-center">
+        <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-gentle">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10A2,2 0 0,1 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"/>
+          </svg>
+        </div>
+        <h1 class="text-2xl font-bold text-white mb-2">Admin Panel</h1>
+        <p class="text-indigo-100">Buku Tamu Digital</p>
+        <p class="text-indigo-200 text-sm">Kabupaten Tapin</p>
+      </div>
+      
+      <form id="loginForm" class="p-8 space-y-6">
+        <div>
+          <label for="username" class="block text-sm font-semibold text-slate-700 mb-2">
+            Username
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-400" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+              </svg>
+            </div>
+            <input 
+              type="text" 
+              id="username" 
+              name="username" 
+              required 
+              class="w-full pl-10 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition"
+              placeholder="Masukkan username"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-semibold text-slate-700 mb-2">
+            Password
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-400" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"/>
+              </svg>
+            </div>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              required 
+              class="w-full pl-10 pr-12 py-3 border-2 border-slate-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition"
+              placeholder="Masukkan password"
+            >
+            <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-400 hover:text-slate-600 transition" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="loginError" class="hidden bg-rose-50 border border-rose-200 rounded-xl p-4">
+          <div class="flex items-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-rose-500" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
+            </svg>
+            <p class="text-rose-700 text-sm font-medium">Username atau password salah!</p>
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          id="loginBtn"
+          class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-3 px-4 rounded-xl font-semibold shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-[1.02]"
+        >
+          <span id="loginText" class="flex items-center justify-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M10,17V14H3V10H10V7L15,12L10,17M10,2H19A2,2 0 0,1 21,4V20A2,2 0 0,1 19,22H10A2,2 0 0,1 8,20V18H10V20H19V4H10V6H8V4A2,2 0 0,1 10,2Z"/>
+            </svg>
+            Masuk Admin
+          </span>
+          <span id="loginLoading" class="hidden flex items-center justify-center gap-2">
+            <svg class="animate-spin w-5 h-5" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+            </svg>
+            Memverifikasi...
+          </span>
+        </button>
+
+        <div class="text-center">
+          <p class="text-slate-500 text-sm">
+            Default: <span class="font-mono bg-slate-100 px-2 py-1 rounded">admin / admin123</span>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Dashboard -->
+  <div id="adminDashboard" class="hidden min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-white/95 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-40 shadow-lg no-print">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16 sm:h-20">
+          <div class="flex items-center gap-4">
+            <!-- Logo -->
+            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-lg animate-pulse-gentle">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-10 sm:h-10 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,19H5V5H19V19Z"/>
+              </svg>
+            </div>
+            <div class="animate-fade-in-up">
+              <h1 class="text-xl sm:text-2xl font-bold text-slate-900">Admin Panel</h1>
+              <p class="text-slate-600 font-medium text-sm sm:text-base">Buku Tamu Digital - Kabupaten Tapin</p>
+            </div>
+          </div>
+          
+          <div class="flex items-center gap-3 sm:gap-4">
+            <div class="text-right hidden sm:block">
+              <p class="text-sm text-slate-500">Selamat datang</p>
+              <p id="adminName" class="text-lg font-semibold text-slate-900">Administrator</p>
+            </div>
+            
+            <!-- Settings Button -->
+            <button id="settingsBtn" class="inline-flex items-center gap-2 bg-slate-600 hover:bg-slate-700 text-white px-3 sm:px-4 py-2 rounded-lg transition text-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+              </svg>
+              <span class="hidden sm:inline">Pengaturan</span>
+            </button>
+            
+            <!-- Logout Button -->
+            <button id="logoutBtn" class="inline-flex items-center gap-2 bg-rose-600 hover:bg-rose-700 text-white px-3 sm:px-4 py-2 rounded-lg transition text-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z"/>
+              </svg>
+              <span class="hidden sm:inline">Keluar</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-4 sm:p-6 lg:p-8">
+      <div class="max-w-7xl mx-auto">
+        <!-- Navigation Tabs -->
+        <div class="mb-8 no-print">
+          <div class="border-b border-slate-200">
+            <nav class="-mb-px flex space-x-8 overflow-x-auto">
+              <button class="tab-btn active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-indigo-500 text-indigo-600" data-tab="dashboard">
+                <span class="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M13,3V9H21V3M13,21H21V11H13M3,21H11V15H3M3,13H11V3H3V13Z"/>
+                  </svg>
+                  Dashboard
+                </span>
+              </button>
+              <button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300" data-tab="visitors">
+                <span class="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M16,4C18.11,4 19.8,5.69 19.8,7.8C19.8,9.91 18.11,11.6 16,11.6C13.89,11.6 12.2,9.91 12.2,7.8C12.2,5.69 13.89,4 16,4M16,13.4C18.67,13.4 24,14.73 24,17.4V20H8V17.4C8,14.73 13.33,13.4 16,13.4M8.8,12C10.36,12 11.6,10.76 11.6,9.2C11.6,7.64 10.36,6.4 8.8,6.4C7.24,6.4 6,7.64 6,9.2C6,10.76 7.24,12 8.8,12M8.8,13.4C6.67,13.4 2.4,14.47 2.4,16.6V18.8H6.4V17.4C6.4,16.07 7.09,14.93 8.8,13.4Z"/>
+                  </svg>
+                  Data Tamu
+                </span>
+              </button>
+              <button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300" data-tab="surveys">
+                <span class="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.46,13.97L5.82,21L12,17.27Z"/>
+                  </svg>
+                  Survei
+                </span>
+              </button>
+              <button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300" data-tab="reports">
+                <span class="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                  </svg>
+                  Laporan
+                </span>
+              </button>
+            </nav>
+          </div>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboardTab" class="tab-content">
+          <div class="mb-8 animate-fade-in-up">
+            <h2 class="text-3xl font-bold text-slate-900 mb-2">Dashboard Overview</h2>
+            <p class="text-slate-600">Ringkasan data kunjungan dan aktivitas sistem</p>
+          </div>
+
+          <!-- Stats Cards -->
+          <div class="dashboard-grid mb-8">
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-6 animate-fade-in-up">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-slate-600 text-sm font-medium">Total Tamu Hari Ini</p>
+                  <p id="todayVisitors" class="text-3xl font-bold text-slate-900">0</p>
+                  <p class="text-emerald-600 text-sm font-medium mt-1">
+                    <span id="todayActive">0</span> sedang berkunjung
+                  </p>
+                </div>
+                <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 4V6C15 7.1 14.1 8 13 8S11 7.1 11 6V4L5 7V9C5 10.1 5.9 11 7 11S9 10.1 9 9V11C9 12.1 9.9 13 11 13H13C14.1 13 15 12.1 15 11V9C15 10.1 15.9 11 17 11S19 10.1 19 9Z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-6 animate-fade-in-up">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-slate-600 text-sm font-medium">Total Minggu Ini</p>
+                  <p id="weekVisitors" class="text-3xl font-bold text-slate-900">0</p>
+                  <p class="text-blue-600 text-sm font-medium mt-1">
+                    7 hari terakhir
+                  </p>
+                </div>
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,19H5V8H19V19M16,1V3H8V1H6V3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H18V1H16Z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-6 animate-fade-in-up">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-slate-600 text-sm font-medium">Rating Rata-rata</p>
+                  <p id="avgRating" class="text-3xl font-bold text-slate-900">0.0</p>
+                  <p class="text-amber-600 text-sm font-medium mt-1">
+                    <span id="totalSurveys">0</span> survei
+                  </p>
+                </div>
+                <div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.46,13.97L5.82,21L12,17.27Z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-6 sm:p-8 animate-slide-in-left">
+            <h3 class="text-xl font-bold text-slate-900 mb-6">Aksi Cepat</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <button id="exportTodayBtn" class="flex items-center gap-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 p-4 rounded-xl transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                </svg>
+                <span class="font-medium">Export Hari Ini</span>
+              </button>
+              
+              <button id="printReportBtn" class="flex items-center gap-3 bg-blue-50 hover:bg-blue-100 text-blue-700 p-4 rounded-xl transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18,3H6V7H18M19,12A1,1 0 0,1 18,11A1,1 0 0,1 19,10A1,1 0 0,1 20,11A1,1 0 0,1 19,12M16,19H8V14H16M19,8H5A3,3 0 0,0 2,11V17H6V21H18V17H22V11A3,3 0 0,0 19,8Z"/>
+                </svg>
+                <span class="font-medium">Cetak Laporan</span>
+              </button>
+              
+              <a href="index.html" class="flex items-center gap-3 bg-purple-50 hover:bg-purple-100 text-purple-700 p-4 rounded-xl transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"/>
+                </svg>
+                <span class="font-medium">Ke Halaman Utama</span>
+              </a>
+              
+              <button id="refreshDataBtn" class="flex items-center gap-3 bg-slate-50 hover:bg-slate-100 text-slate-700 p-4 rounded-xl transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"/>
+                </svg>
+                <span class="font-medium">Refresh Data</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visitors Tab -->
+        <div id="visitorsTab" class="tab-content hidden">
+          <div class="mb-8 animate-fade-in-up">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h2 class="text-3xl font-bold text-slate-900 mb-2">Data Pengunjung</h2>
+                <p class="text-slate-600">Kelola dan pantau data kunjungan</p>
+              </div>
+              <div class="flex gap-3">
+                <button id="exportVisitorsBtn" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg transition text-sm">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                  </svg>
+                  Export CSV
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-6 mb-8 no-print">
+            <h3 class="text-lg font-semibold text-slate-900 mb-4">Filter & Pencarian</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Pencarian</label>
+                <input 
+                  type="text" 
+                  id="searchVisitors" 
+                  placeholder="Cari nama, instansi, atau keperluan..."
+                  class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                >
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Tanggal Mulai</label>
+                <input 
+                  type="date" 
+                  id="startDate" 
+                  class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                >
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Tanggal Akhir</label>
+                <input 
+                  type="date" 
+                  id="endDate" 
+                  class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Visitors Table -->
+          <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
+            <div class="overflow-x-auto custom-scrollbar">
+              <table class="min-w-full divide-y divide-slate-200">
+                <thead class="bg-slate-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Pengunjung</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Kontak</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Keperluan</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Waktu</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider no-print">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="visitorsTableBody" class="bg-white divide-y divide-slate-200">
+                  <!-- Table rows will be populated here -->
+                </tbody>
+              </table>
+            </div>
+            
+            <div id="noVisitorsData" class="text-center py-12 hidden">
+              <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-slate-400" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M16,4C18.11,4 19.8,5.69 19.8,7.8C19.8,9.91 18.11,11.6 16,11.6C13.89,11.6 12.2,9.91 12.2,7.8C12.2,5.69 13.89,4 16,4M16,13.4C18.67,13.4 24,14.73 24,17.4V20H8V17.4C8,14.73 13.33,13.4 16,13.4M8.8,12C10.36,12 11.6,10.76 11.6,9.2C11.6,7.64 10.36,6.4 8.8,6.4C7.24,6.4 6,7.64 6,9.2C6,10.76 7.24,12 8.8,12M8.8,13.4C6.67,13.4 2.4,14.47 2.4,16.6V18.8H6.4V17.4C6.4,16.07 7.09,14.93 8.8,13.4Z"/>
+                </svg>
+              </div>
+              <p class="text-slate-500 text-lg">Tidak ada data pengunjung</p>
+              <p class="text-slate-400 text-sm mt-2">Data akan muncul setelah ada yang mendaftar</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Surveys Tab -->
+        <div id="surveysTab" class="tab-content hidden">
+          <div class="mb-8 animate-fade-in-up">
+            <h2 class="text-3xl font-bold text-slate-900 mb-2">Data Survei Kepuasan</h2>
+            <p class="text-slate-600">Analisis feedback dan rating dari pengunjung</p>
+          </div>
+
+          <!-- Survey Stats -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-slate-600 text-sm font-medium">Total Survei</p>
+                  <p id="totalSurveysCount" class="text-2xl font-bold text-slate-900">0</p>
+                </div>
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-slate-600 text-sm font-medium">Rating 5 Bintang</p>
+                  <p id="rating5Count" class="text-2xl font-bold text-emerald-600">0</p>
+                </div>
+                <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center">
+                  <span class="text-white text-xl">⭐</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-slate-600 text-sm font-medium">Rating 4 Bintang</p>
+                  <p id="rating4Count" class="text-2xl font-bold text-blue-600">0</p>
+                </div>
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center">
+                  <span class="text-white text-xl">⭐</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-slate-600 text-sm font-medium">Rating ≤ 3 Bintang</p>
+                  <p id="rating3BelowCount" class="text-2xl font-bold text-amber-600">0</p>
+                </div>
+                <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center">
+                  <span class="text-white text-xl">⭐</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Surveys List -->
+          <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-6 sm:p-8">
+            <h3 class="text-xl font-bold text-slate-900 mb-6">Daftar Survei</h3>
+            <div id="surveysList" class="space-y-4 custom-scrollbar max-h-96 overflow-y-auto">
+              <!-- Survey items will be populated here -->
+            </div>
+            
+            <div id="noSurveysData" class="text-center py-12 hidden">
+              <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-slate-400" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.46,13.97L5.82,21L12,17.27Z"/>
+                </svg>
+              </div>
+              <p class="text-slate-500 text-lg">Belum ada survei</p>
+              <p class="text-slate-400 text-sm mt-2">Survei akan muncul setelah pengunjung memberikan feedback</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div id="reportsTab" class="tab-content hidden">
+          <div class="mb-8 animate-fade-in-up">
+            <h2 class="text-3xl font-bold text-slate-900 mb-2">Laporan & Analisis</h2>
+            <p class="text-slate-600">Generate laporan berdasarkan periode tertentu</p>
+          </div>
+
+          <!-- Report Generator -->
+          <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-6 sm:p-8 mb-8 no-print">
+            <h3 class="text-xl font-bold text-slate-900 mb-6">Generator Laporan</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Tanggal Mulai</label>
+                <input 
+                  type="date" 
+                  id="reportStartDate" 
+                  class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                >
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Tanggal Akhir</label>
+                <input 
+                  type="date" 
+                  id="reportEndDate" 
+                  class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                >
+              </div>
+              <div class="flex items-end">
+                <button id="generateReportBtn" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-3 px-4 rounded-lg font-semibold transition">
+                  Generate Laporan
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Report Content -->
+          <div id="reportContent" class="bg-white rounded-2xl shadow-xl border border-slate-200 p-6 sm:p-8">
+            <div class="text-center py-12">
+              <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-slate-400" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                </svg>
+              </div>
+              <p class="text-slate-500 text-lg">Pilih periode untuk generate laporan</p>
+              <p class="text-slate-400 text-sm mt-2">Laporan akan menampilkan statistik kunjungan dan survei</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12 no-print">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,19H5V5H19V19Z"/>
+                </svg>
+              </div>
+              <span class="text-lg font-semibold text-slate-900">Admin Panel</span>
+            </div>
+            <p class="text-slate-600 text-sm">
+              Sistem manajemen buku tamu digital untuk Pemerintah Kabupaten Tapin dengan fitur lengkap dan keamanan terjamin.
+            </p>
+          </div>
+          
+          <div>
+            <h4 class="font-semibold text-slate-900 mb-4">Fitur Utama</h4>
+            <ul class="space-y-2 text-sm text-slate-600">
+              <li>• Dashboard real-time</li>
+              <li>• Manajemen data tamu</li>
+              <li>• Analisis survei kepuasan</li>
+              <li>• Export & print laporan</li>
+              <li>• Keamanan berlapis</li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 class="font-semibold text-slate-900 mb-4">Informasi Sistem</h4>
+            <ul class="space-y-2 text-sm text-slate-600">
+              <li>• Versi: 2.0.0</li>
+              <li>• Update: Desember 2024</li>
+              <li>• Status: Aktif</li>
+              <li>• Support: 24/7</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="border-t border-slate-200 mt-8 pt-8 text-center">
+          <p class="text-slate-500 text-sm">
+            © 2024 Pemerintah Kabupaten Tapin. Admin Panel Buku Tamu Digital.
+          </p>
+          <p class="text-slate-400 text-xs mt-2">
+            Jl. A. Yani No. 1, Rantau, Kabupaten Tapin, Kalimantan Selatan 70815
+          </p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 no-print">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-auto">
+      <div class="p-6 sm:p-8">
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-12 h-12 bg-gradient-to-br from-slate-600 to-slate-800 rounded-xl flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-slate-900">Pengaturan Admin</h3>
+            <p class="text-slate-600">Kelola keamanan dan preferensi</p>
+          </div>
+        </div>
+        
+        <form id="settingsForm" class="space-y-6">
+          <div>
+            <label for="newUsername" class="block text-sm font-semibold text-slate-700 mb-2">
+              Username Baru
+            </label>
+            <input 
+              type="text" 
+              id="newUsername" 
+              name="newUsername" 
+              class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition"
+              placeholder="Masukkan username baru"
+            >
+          </div>
+
+          <div>
+            <label for="newPassword" class="block text-sm font-semibold text-slate-700 mb-2">
+              Password Baru
+            </label>
+            <input 
+              type="password" 
+              id="newPassword" 
+              name="newPassword" 
+              class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition"
+              placeholder="Masukkan password baru"
+            >
+          </div>
+
+          <div>
+            <label for="confirmPassword" class="block text-sm font-semibold text-slate-700 mb-2">
+              Konfirmasi Password
+            </label>
+            <input 
+              type="password" 
+              id="confirmPassword" 
+              name="confirmPassword" 
+              class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition"
+              placeholder="Konfirmasi password baru"
+            >
+          </div>
+
+          <div class="flex gap-3">
+            <button type="button" id="cancelSettings" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 py-3 px-4 rounded-lg font-semibold transition">
+              Batal
+            </button>
+            <button type="submit" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg font-semibold transition">
+              Simpan
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden no-print">
+    <div id="toastInner" class="px-6 py-4 rounded-xl text-white shadow-2xl max-w-sm transform transition-all duration-300"></div>
+  </div>
+
+  <script>
+    // Constants
+    const STORAGE_KEY = 'bukuTamuKabupaten_v1';
+    const SURVEY_KEY = 'surveyData_v1';
+    const ADMIN_KEY = 'adminCredentials_v1';
+    const SESSION_KEY = 'adminSession_v1';
+    
+    // Default admin credentials
+    const DEFAULT_ADMIN = {
+      username: 'admin',
+      password: 'admin123'
+    };
+
+    // Elements
+    const loginScreen = document.getElementById('loginScreen');
+    const adminDashboard = document.getElementById('adminDashboard');
+    const loginForm = document.getElementById('loginForm');
+    const loginBtn = document.getElementById('loginBtn');
+    const loginText = document.getElementById('loginText');
+    const loginLoading = document.getElementById('loginLoading');
+    const loginError = document.getElementById('loginError');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsModal = document.getElementById('settingsModal');
+    const settingsForm = document.getElementById('settingsForm');
+    const cancelSettings = document.getElementById('cancelSettings');
+    const togglePassword = document.getElementById('togglePassword');
+    const toast = document.getElementById('toast');
+    const toastInner = document.getElementById('toastInner');
+
+    // Tab elements
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    // State
+    let currentUser = null;
+    let allVisitors = [];
+    let allSurveys = [];
+
+    // Utilities
+    const showToast = (message, type = 'success') => {
+      toastInner.textContent = message;
+      toastInner.className = 'px-6 py-4 rounded-xl text-white shadow-2xl max-w-sm transform transition-all duration-300';
+      
+      if (type === 'success') toastInner.classList.add('bg-emerald-600');
+      if (type === 'error') toastInner.classList.add('bg-rose-600');
+      if (type === 'info') toastInner.classList.add('bg-blue-600');
+      
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 4000);
+    };
+
+    const formatDateTime = (dateString) => {
+      const date = new Date(dateString);
+      return date.toLocaleString('id-ID', {
+        weekday: 'short',
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    };
+
+    const isToday = (dateString) => {
+      const date = new Date(dateString);
+      const today = new Date();
+      return date.toDateString() === today.toDateString();
+    };
+
+    const isThisWeek = (dateString) => {
+      const date = new Date(dateString);
+      const today = new Date();
+      const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+      return date >= weekAgo && date <= today;
+    };
+
+    // Authentication
+    const getAdminCredentials = () => {
+      try {
+        const stored = localStorage.getItem(ADMIN_KEY);
+        return stored ? JSON.parse(stored) : DEFAULT_ADMIN;
+      } catch (error) {
+        return DEFAULT_ADMIN;
+      }
+    };
+
+    const saveAdminCredentials = (credentials) => {
+      try {
+        localStorage.setItem(ADMIN_KEY, JSON.stringify(credentials));
+        return true;
+      } catch (error) {
+        return false;
+      }
+    };
+
+    const createSession = (username) => {
+      const session = {
+        username,
+        loginTime: new Date().toISOString(),
+        expires: new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString() // 8 hours
+      };
+      
+      try {
+        localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+        return session;
+      } catch (error) {
+        return null;
+      }
+    };
+
+    const getSession = () => {
+      try {
+        const stored = localStorage.getItem(SESSION_KEY);
+        if (!stored) return null;
+        
+        const session = JSON.parse(stored);
+        const now = new Date();
+        const expires = new Date(session.expires);
+        
+        if (now > expires) {
+          localStorage.removeItem(SESSION_KEY);
+          return null;
+        }
+        
+        return session;
+      } catch (error) {
+        return null;
+      }
+    };
+
+    const clearSession = () => {
+      localStorage.removeItem(SESSION_KEY);
+    };
+
+    const authenticate = (username, password) => {
+      const credentials = getAdminCredentials();
+      return username === credentials.username && password === credentials.password;
+    };
+
+    // Data loading
+    const loadVisitors = () => {
+      try {
+        const data = localStorage.getItem(STORAGE_KEY);
+        allVisitors = data ? JSON.parse(data) : [];
+        return allVisitors;
+      } catch (error) {
+        console.error('Error loading visitors:', error);
+        allVisitors = [];
+        return [];
+      }
+    };
+
+    const loadSurveys = () => {
+      try {
+        const data = localStorage.getItem(SURVEY_KEY);
+        allSurveys = data ? JSON.parse(data) : [];
+        return allSurveys;
+      } catch (error) {
+        console.error('Error loading surveys:', error);
+        allSurveys = [];
+        return [];
+      }
+    };
+
+    // Dashboard updates
+    const updateDashboardStats = () => {
+      const todayVisitors = allVisitors.filter(v => isToday(v.jamMasuk));
+      const weekVisitors = allVisitors.filter(v => isThisWeek(v.jamMasuk));
+      const activeVisitors = todayVisitors.filter(v => !v.jamKeluar);
+      
+      document.getElementById('todayVisitors').textContent = todayVisitors.length;
+      document.getElementById('todayActive').textContent = activeVisitors.length;
+      document.getElementById('weekVisitors').textContent = weekVisitors.length;
+      
+      // Survey stats
+      const avgRating = allSurveys.length > 0 
+        ? (allSurveys.reduce((sum, s) => sum + s.rating, 0) / allSurveys.length).toFixed(1)
+        : '0.0';
+      
+      document.getElementById('avgRating').textContent = avgRating;
+      document.getElementById('totalSurveys').textContent = allSurveys.length;
+    };
+
+    const updateVisitorsTable = (visitors = allVisitors) => {
+      const tbody = document.getElementById('visitorsTableBody');
+      const noData = document.getElementById('noVisitorsData');
+      
+      if (visitors.length === 0) {
+        tbody.innerHTML = '';
+        noData.classList.remove('hidden');
+        return;
+      }
+      
+      noData.classList.add('hidden');
+      
+      // Sort by most recent first
+      const sortedVisitors = [...visitors].sort((a, b) => 
+        new Date(b.jamMasuk) - new Date(a.jamMasuk)
+      );
+      
+      tbody.innerHTML = sortedVisitors.map(visitor => `
+        <tr class="hover:bg-slate-50">
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="flex items-center">
+              <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center">
+                <span class="text-white font-bold text-sm">${visitor.nama.charAt(0).toUpperCase()}</span>
+              </div>
+              <div class="ml-4">
+                <div class="text-sm font-medium text-slate-900">${visitor.nama}</div>
+                <div class="text-sm text-slate-500">${visitor.instansi}</div>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-slate-900">${visitor.telepon}</div>
+            <div class="text-sm text-slate-500">${visitor.bertemu !== '-' ? visitor.bertemu : 'Tidak disebutkan'}</div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-slate-900">${visitor.keperluan}</div>
+            <div class="text-sm text-slate-500">${visitor.bagian}</div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-slate-900">${formatDateTime(visitor.jamMasuk)}</div>
+            ${visitor.jamKeluar ? `<div class="text-sm text-slate-500">Keluar: ${formatDateTime(visitor.jamKeluar)}</div>` : ''}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+              visitor.jamKeluar 
+                ? 'bg-emerald-100 text-emerald-800' 
+                : 'bg-amber-100 text-amber-800'
+            }">
+              ${visitor.jamKeluar ? '✓ Selesai' : '⏱ Sedang Berkunjung'}
+            </span>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium no-print">
+            ${!visitor.jamKeluar ? `
+              <button onclick="checkoutVisitor('${visitor.id}')" class="text-emerald-600 hover:text-emerald-900 mr-3">
+                Check Out
+              </button>
+            ` : ''}
+            <button onclick="deleteVisitor('${visitor.id}')" class="text-rose-600 hover:text-rose-900">
+              Hapus
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    };
+
+    const updateSurveysDisplay = () => {
+      // Update survey stats
+      const rating5 = allSurveys.filter(s => s.rating === 5).length;
+      const rating4 = allSurveys.filter(s => s.rating === 4).length;
+      const rating3Below = allSurveys.filter(s => s.rating <= 3).length;
+      
+      document.getElementById('totalSurveysCount').textContent = allSurveys.length;
+      document.getElementById('rating5Count').textContent = rating5;
+      document.getElementById('rating4Count').textContent = rating4;
+      document.getElementById('rating3BelowCount').textContent = rating3Below;
+      
+      // Update surveys list
+      const surveysList = document.getElementById('surveysList');
+      const noSurveys = document.getElementById('noSurveysData');
+      
+      if (allSurveys.length === 0) {
+        surveysList.innerHTML = '';
+        noSurveys.classList.remove('hidden');
+        return;
+      }
+      
+      noSurveys.classList.add('hidden');
+      
+      const sortedSurveys = [...allSurveys].sort((a, b) => 
+        new Date(b.timestamp) - new Date(a.timestamp)
+      );
+      
+      surveysList.innerHTML = sortedSurveys.map(survey => {
+        const visitor = allVisitors.find(v => v.id === survey.visitorId);
+        const visitorName = visitor ? visitor.nama : 'Pengunjung Tidak Dikenal';
+        
+        return `
+          <div class="bg-slate-50 rounded-xl p-4">
+            <div class="flex items-start justify-between mb-3">
+              <div>
+                <p class="font-semibold text-slate-900">${visitorName}</p>
+                <p class="text-sm text-slate-500">${formatDateTime(survey.timestamp)}</p>
+              </div>
+              <div class="flex items-center gap-1">
+                ${Array.from({length: 5}, (_, i) => 
+                  `<span class="text-lg ${i < survey.rating ? 'text-amber-400' : 'text-slate-300'}">⭐</span>`
+                ).join('')}
+              </div>
+            </div>
+            ${survey.comment ? `
+              <div class="bg-white rounded-lg p-3 border border-slate-200">
+                <p class="text-sm text-slate-700">"${survey.comment}"</p>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    };
+
+    // Visitor actions
+    window.checkoutVisitor = (visitorId) => {
+      const visitorIndex = allVisitors.findIndex(v => v.id === visitorId);
+      if (visitorIndex !== -1) {
+        allVisitors[visitorIndex].jamKeluar = new Date().toISOString();
+        
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(allVisitors));
+          updateVisitorsTable();
+          updateDashboardStats();
+          showToast('Visitor berhasil check out', 'success');
+        } catch (error) {
+          showToast('Gagal melakukan check out', 'error');
+        }
+      }
+    };
+
+    window.deleteVisitor = (visitorId) => {
+      if (confirm('Apakah Anda yakin ingin menghapus data pengunjung ini?')) {
+        allVisitors = allVisitors.filter(v => v.id !== visitorId);
+        
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(allVisitors));
+          updateVisitorsTable();
+          updateDashboardStats();
+          showToast('Data pengunjung berhasil dihapus', 'success');
+        } catch (error) {
+          showToast('Gagal menghapus data pengunjung', 'error');
+        }
+      }
+    };
+
+    // Export functions
+    const exportToCSV = (data, filename) => {
+      if (data.length === 0) {
+        showToast('Tidak ada data untuk diekspor', 'error');
+        return;
+      }
+      
+      const headers = ['Nama', 'Instansi', 'Telepon', 'Keperluan', 'Bagian', 'Bertemu Dengan', 'Jam Masuk', 'Jam Keluar', 'Status'];
+      const csvContent = [
+        headers.join(','),
+        ...data.map(visitor => [
+          `"${visitor.nama}"`,
+          `"${visitor.instansi}"`,
+          `"${visitor.telepon}"`,
+          `"${visitor.keperluan}"`,
+          `"${visitor.bagian}"`,
+          `"${visitor.bertemu}"`,
+          `"${formatDateTime(visitor.jamMasuk)}"`,
+          visitor.jamKeluar ? `"${formatDateTime(visitor.jamKeluar)}"` : '""',
+          visitor.jamKeluar ? '"Selesai"' : '"Sedang Berkunjung"'
+        ].join(','))
+      ].join('\n');
+      
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      showToast('Data berhasil diekspor', 'success');
+    };
+
+    // Event handlers
+    const handleLogin = async (e) => {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      
+      if (!username || !password) {
+        showToast('Mohon lengkapi username dan password', 'error');
+        return;
+      }
+      
+      // Show loading
+      loginBtn.disabled = true;
+      loginText.classList.add('hidden');
+      loginLoading.classList.remove('hidden');
+      loginError.classList.add('hidden');
+      
+      // Simulate authentication delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      if (authenticate(username, password)) {
+        const session = createSession(username);
+        if (session) {
+          currentUser = session;
+          document.getElementById('adminName').textContent = username;
+          
+          loginScreen.classList.add('hidden');
+          adminDashboard.classList.remove('hidden');
+          
+          // Load and display data
+          loadVisitors();
+          loadSurveys();
+          updateDashboardStats();
+          updateVisitorsTable();
+          updateSurveysDisplay();
+          
+          showToast(`Selamat datang, ${username}!`, 'success');
+        } else {
+          showToast('Gagal membuat sesi login', 'error');
+        }
+      } else {
+        loginError.classList.remove('hidden');
+        loginForm.classList.add('animate-shake');
+        setTimeout(() => {
+          loginForm.classList.remove('animate-shake');
+        }, 500);
+      }
+      
+      // Reset button
+      loginBtn.disabled = false;
+      loginText.classList.remove('hidden');
+      loginLoading.classList.add('hidden');
+    };
+
+    const handleLogout = () => {
+      if (confirm('Apakah Anda yakin ingin keluar?')) {
+        clearSession();
+        currentUser = null;
+        
+        adminDashboard.classList.add('hidden');
+        loginScreen.classList.remove('hidden');
+        
+        // Reset form
+        loginForm.reset();
+        loginError.classList.add('hidden');
+        
+        showToast('Berhasil logout', 'info');
+      }
+    };
+
+    const handleTabSwitch = (tabName) => {
+      // Update tab buttons
+      tabBtns.forEach(btn => {
+        if (btn.dataset.tab === tabName) {
+          btn.classList.add('active', 'border-indigo-500', 'text-indigo-600');
+          btn.classList.remove('border-transparent', 'text-slate-500', 'hover:text-slate-700', 'hover:border-slate-300');
+        } else {
+          btn.classList.remove('active', 'border-indigo-500', 'text-indigo-600');
+          btn.classList.add('border-transparent', 'text-slate-500', 'hover:text-slate-700', 'hover:border-slate-300');
+        }
+      });
+      
+      // Update tab content
+      tabContents.forEach(content => {
+        if (content.id === `${tabName}Tab`) {
+          content.classList.remove('hidden');
+        } else {
+          content.classList.add('hidden');
+        }
+      });
+    };
+
+    const handleSettings = (e) => {
+      e.preventDefault();
+      
+      const newUsername = document.getElementById('newUsername').value.trim();
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      if (!newUsername && !newPassword) {
+        showToast('Mohon isi minimal satu field', 'error');
+        return;
+      }
+      
+      if (newPassword && newPassword !== confirmPassword) {
+        showToast('Konfirmasi password tidak cocok', 'error');
+        return;
+      }
+      
+      if (newPassword && newPassword.length < 6) {
+        showToast('Password minimal 6 karakter', 'error');
+        return;
+      }
+      
+      const currentCredentials = getAdminCredentials();
+      const updatedCredentials = {
+        username: newUsername || currentCredentials.username,
+        password: newPassword || currentCredentials.password
+      };
+      
+      if (saveAdminCredentials(updatedCredentials)) {
+        settingsModal.classList.add('hidden');
+        settingsForm.reset();
+        
+        if (newUsername) {
+          document.getElementById('adminName').textContent = newUsername;
+        }
+        
+        showToast('Pengaturan berhasil disimpan', 'success');
+      } else {
+        showToast('Gagal menyimpan pengaturan', 'error');
+      }
+    };
+
+    // Search and filter
+    const handleSearch = () => {
+      const searchTerm = document.getElementById('searchVisitors').value.toLowerCase();
+      const startDate = document.getElementById('startDate').value;
+      const endDate = document.getElementById('endDate').value;
+      
+      let filteredVisitors = [...allVisitors];
+      
+      // Apply search filter
+      if (searchTerm) {
+        filteredVisitors = filteredVisitors.filter(visitor =>
+          visitor.nama.toLowerCase().includes(searchTerm) ||
+          visitor.instansi.toLowerCase().includes(searchTerm) ||
+          visitor.keperluan.toLowerCase().includes(searchTerm) ||
+          visitor.bagian.toLowerCase().includes(searchTerm)
+        );
+      }
+      
+      // Apply date filters
+      if (startDate) {
+        const start = new Date(startDate);
+        filteredVisitors = filteredVisitors.filter(visitor =>
+          new Date(visitor.jamMasuk) >= start
+        );
+      }
+      
+      if (endDate) {
+        const end = new Date(endDate + 'T23:59:59');
+        filteredVisitors = filteredVisitors.filter(visitor =>
+          new Date(visitor.jamMasuk) <= end
+        );
+      }
+      
+      updateVisitorsTable(filteredVisitors);
+    };
+
+    // Report generation
+    const generateReport = () => {
+      const startDate = document.getElementById('reportStartDate').value;
+      const endDate = document.getElementById('reportEndDate').value;
+      
+      if (!startDate || !endDate) {
+        showToast('Mohon pilih periode laporan', 'error');
+        return;
+      }
+      
+      const start = new Date(startDate);
+      const end = new Date(endDate + 'T23:59:59');
+      
+      if (start > end) {
+        showToast('Tanggal mulai tidak boleh lebih besar dari tanggal akhir', 'error');
+        return;
+      }
+      
+      const reportVisitors = allVisitors.filter(visitor => {
+        const visitDate = new Date(visitor.jamMasuk);
+        return visitDate >= start && visitDate <= end;
+      });
+      
+      const reportSurveys = allSurveys.filter(survey => {
+        const surveyDate = new Date(survey.timestamp);
+        return surveyDate >= start && surveyDate <= end;
+      });
+      
+      // Generate report content
+      const reportContent = document.getElementById('reportContent');
+      const avgRating = reportSurveys.length > 0 
+        ? (reportSurveys.reduce((sum, s) => sum + s.rating, 0) / reportSurveys.length).toFixed(1)
+        : '0.0';
+      
+      const completedVisits = reportVisitors.filter(v => v.jamKeluar).length;
+      const ongoingVisits = reportVisitors.filter(v => !v.jamKeluar).length;
+      
+      reportContent.innerHTML = `
+        <div class="print-header mb-8">
+          <div class="text-center">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2">Laporan Buku Tamu Digital</h2>
+            <p class="text-slate-600">Pemerintah Kabupaten Tapin</p>
+            <p class="text-slate-500 text-sm">Periode: ${formatDateTime(start.toISOString())} - ${formatDateTime(end.toISOString())}</p>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div class="bg-gradient-to-br from-emerald-500 to-teal-500 text-white rounded-xl p-6">
+            <h3 class="text-lg font-semibold mb-2">Total Kunjungan</h3>
+            <p class="text-3xl font-bold">${reportVisitors.length}</p>
+          </div>
+          <div class="bg-gradient-to-br from-blue-500 to-indigo-500 text-white rounded-xl p-6">
+            <h3 class="text-lg font-semibold mb-2">Kunjungan Selesai</h3>
+            <p class="text-3xl font-bold">${completedVisits}</p>
+          </div>
+          <div class="bg-gradient-to-br from-amber-500 to-orange-500 text-white rounded-xl p-6">
+            <h3 class="text-lg font-semibold mb-2">Sedang Berkunjung</h3>
+            <p class="text-3xl font-bold">${ongoingVisits}</p>
+          </div>
+          <div class="bg-gradient-to-br from-purple-500 to-pink-500 text-white rounded-xl p-6">
+            <h3 class="text-lg font-semibold mb-2">Rating Rata-rata</h3>
+            <p class="text-3xl font-bold">${avgRating}</p>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div>
+            <h3 class="text-xl font-bold text-slate-900 mb-4">Statistik Keperluan</h3>
+            <div class="space-y-3">
+              ${Object.entries(
+                reportVisitors.reduce((acc, visitor) => {
+                  acc[visitor.keperluan] = (acc[visitor.keperluan] || 0) + 1;
+                  return acc;
+                }, {})
+              ).map(([keperluan, count]) => `
+                <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
+                  <span class="font-medium text-slate-700">${keperluan}</span>
+                  <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-semibold">${count}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-bold text-slate-900 mb-4">Statistik Bagian</h3>
+            <div class="space-y-3">
+              ${Object.entries(
+                reportVisitors.reduce((acc, visitor) => {
+                  acc[visitor.bagian] = (acc[visitor.bagian] || 0) + 1;
+                  return acc;
+                }, {})
+              ).map(([bagian, count]) => `
+                <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
+                  <span class="font-medium text-slate-700">${bagian}</span>
+                  <span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-sm font-semibold">${count}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-8 no-print">
+          <div class="flex gap-4">
+            <button onclick="window.print()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline mr-2" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18,3H6V7H18M19,12A1,1 0 0,1 18,11A1,1 0 0,1 19,10A1,1 0 0,1 20,11A1,1 0 0,1 19,12M16,19H8V14H16M19,8H5A3,3 0 0,0 2,11V17H6V21H18V17H22V11A3,3 0 0,0 19,8Z"/>
+              </svg>
+              Cetak Laporan
+            </button>
+            <button onclick="exportToCSV(${JSON.stringify(reportVisitors).replace(/"/g, '&quot;')}, 'laporan_${startDate}_${endDate}.csv')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg font-semibold transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline mr-2" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+              </svg>
+              Export CSV
+            </button>
+          </div>
+        </div>
+      `;
+      
+      showToast('Laporan berhasil dibuat', 'success');
+    };
+
+    // Event listeners
+    loginForm.addEventListener('submit', handleLogin);
+    logoutBtn.addEventListener('click', handleLogout);
+    settingsBtn.addEventListener('click', () => settingsModal.classList.remove('hidden'));
+    cancelSettings.addEventListener('click', () => settingsModal.classList.add('hidden'));
+    settingsForm.addEventListener('submit', handleSettings);
+
+    // Toggle password visibility
+    togglePassword.addEventListener('click', () => {
+      const passwordInput = document.getElementById('password');
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+    });
+
+    // Tab navigation
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => handleTabSwitch(btn.dataset.tab));
+    });
+
+    // Search and filter
+    document.getElementById('searchVisitors').addEventListener('input', handleSearch);
+    document.getElementById('startDate').addEventListener('change', handleSearch);
+    document.getElementById('endDate').addEventListener('change', handleSearch);
+
+    // Quick actions
+    document.getElementById('exportTodayBtn').addEventListener('click', () => {
+      const todayVisitors = allVisitors.filter(v => isToday(v.jamMasuk));
+      exportToCSV(todayVisitors, `tamu_hari_ini_${new Date().toISOString().split('T')[0]}.csv`);
+    });
+
+    document.getElementById('printReportBtn').addEventListener('click', () => {
+      handleTabSwitch('reports');
+    });
+
+    document.getElementById('exportVisitorsBtn').addEventListener('click', () => {
+      exportToCSV(allVisitors, `semua_data_tamu_${new Date().toISOString().split('T')[0]}.csv`);
+    });
+
+    document.getElementById('refreshDataBtn').addEventListener('click', () => {
+      loadVisitors();
+      loadSurveys();
+      updateDashboardStats();
+      updateVisitorsTable();
+      updateSurveysDisplay();
+      showToast('Data berhasil diperbarui', 'success');
+    });
+
+    document.getElementById('generateReportBtn').addEventListener('click', generateReport);
+
+    // Close modals when clicking outside
+    settingsModal.addEventListener('click', (e) => {
+      if (e.target === settingsModal) {
+        settingsModal.classList.add('hidden');
+      }
+    });
+
+    // Initialize
+    const initializeApp = () => {
+      const session = getSession();
+      
+      if (session) {
+        currentUser = session;
+        document.getElementById('adminName').textContent = session.username;
+        
+        loginScreen.classList.add('hidden');
+        adminDashboard.classList.remove('hidden');
+        
+        loadVisitors();
+        loadSurveys();
+        updateDashboardStats();
+        updateVisitorsTable();
+        updateSurveysDisplay();
+        
+        // Set default dates
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('startDate').value = today;
+        document.getElementById('endDate').value = today;
+        document.getElementById('reportStartDate').value = today;
+        document.getElementById('reportEndDate').value = today;
+      } else {
+        loginScreen.classList.remove('hidden');
+        adminDashboard.classList.add('hidden');
+      }
+    };
+
+    // Start the app
+    initializeApp();
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9857b616b60c7549',t:'MTc1ODk0MTYxMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
