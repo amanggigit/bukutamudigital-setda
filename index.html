@@ -58,12 +58,18 @@
 <body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-900">
   <div class="min-h-screen flex flex-col">
     <!-- Header -->
-   <div class="flex items-center justify-center mb-6">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Lambang_Kabupaten_Tapin.png" 
-       alt="Logo Tapin" 
-       class="w-8 h-8 md:w-10 md:h-10 object-contain mr-2">
-  <h1 class="text-2xl font-bold text-indigo-700">Buku Tamu Digital</h1>
-</div>
+    <header class="bg-white/90 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16 sm:h-20">
+          <div class="flex items-center gap-4">
+            <!-- Logo -->
+            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center shadow-lg animate-pulse-gentle">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-10 sm:h-10 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+              </svg>
+            </div>
+            <div class="animate-fade-in-up">
+              <h1 class="text-xl sm:text-2xl font-bold text-slate-900">Buku Tamu Digital</h1>
               <p class="text-slate-600 font-medium text-sm sm:text-base">Pemerintah Kabupaten Tapin</p>
             </div>
           </div>
@@ -99,7 +105,7 @@
           </h2>
           <p class="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
             Silakan isi formulir di bawah ini untuk mendaftarkan kunjungan Anda ke 
-            <span class="font-semibold text-emerald-600">Sekretariat Daerah Kabupaten Tapin</span>
+            <span class="font-semibold text-emerald-600">Pemerintah Kabupaten Tapin</span>
           </p>
         </div>
 
@@ -200,15 +206,7 @@
                   class="form-input w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition"
                 >
                   <option value="">Pilih bagian yang dituju</option>
-                  <option value="Bupati Tapin">Bupati Tapin </option>
-                  <option value="Bupati Tapin">Wakil Bupati Tapin </option>
                   <option value="Sekretariat Daerah">Sekretariat Daerah</option>
-                  <option value="Staf Ahli Bid Pemerintahan, Hukum dan Politik ">Staf Ahli Bid Pemerintahan, Hukum dan Politik</option>
-                  <option value="Staf Ahli Bid Kemasyarakatan dan SDM ">Staf Ahli  Bid Kemasyarakatan dan SDM </option>
-                  <option value="Staf Ahli  Bid Ekonomi, Keuangan dan Pembangunan ">Staf Ahli Bid Ekonomi, Keuangan dan Pembangunan</option>
-                  <option value="Asisten Pemerintahan">Asisten Pemerintahan</option>
-                  <option value="Asisten Ekonomi dan Pembangunan">Asisten Ekonomi dan Pembangunan </option>
-                  <option value="Asisten Administrasi Umum">Asisten Administrasi Umum </option>
                   <option value="Bagian Umum">Bagian Umum</option>
                   <option value="Bagian Keuangan">Bagian Keuangan</option>
                   <option value="Bagian Hukum">Bagian Hukum</option>
@@ -216,8 +214,8 @@
                   <option value="Bagian Pemerintahan">Bagian Pemerintahan</option>
                   <option value="Bagian Kesejahteraan Rakyat">Bagian Kesejahteraan Rakyat</option>
                   <option value="Bagian Ekonomi">Bagian Ekonomi</option>
-                  <option value="Staf Khusus Bupati">Staf Khusus Bupati </option>
-                  
+                  <option value="DPRD">DPRD</option>
+                  <option value="Inspektorat">Inspektorat</option>
                 </select>
               </div>
 
@@ -327,10 +325,10 @@
             <span class="text-lg font-semibold text-slate-900">Pemerintah Kabupaten Tapin</span>
           </div>
           <p class="text-slate-500 text-sm mb-4">
-            Protokol dan Komunikasi Pimpinan © 2025
+            Jl. A. Yani No. 1, Rantau, Kabupaten Tapin, Kalimantan Selatan 70815
           </p>
           <p class="text-slate-400 text-xs">
-             Sekretariat Daerah Pemerintah Kabupaten Tapin.
+            © 2024 Pemerintah Kabupaten Tapin. Sistem Buku Tamu Digital.
           </p>
         </div>
       </div>
@@ -828,7 +826,3 @@
   </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'985797090304ab55',t:'MTc1ODk0MDM0MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
-
-
-
-
